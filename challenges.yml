@@ -1,0 +1,33 @@
+extending_currentproductid:
+  question: |
+    What is the best way to pass a JavaScript variable into your app through the template?
+  explanation: |
+    Correct! Remember to always escape your data so that you don't bump into JavaScript errors!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```twig
+          <script>
+             var mySharedVariable = '{{ mySharedValue }}';
+          </script>
+          ```
+        b: |
+          ```twig
+          <script>
+             window.mySharedVariable = '{{ mySharedValue|e('js') }}';
+          </script>
+          ```
+        c: |
+          ```twig
+          <script>
+             window.mySharedVariable = '{{ mySharedValue }}';
+          </script>
+          ```
+        d: |
+          ```twig
+          <script>
+              mySharedVariable = '{{ mySharedValue|e('js') }}';
+          </script>
+          ```
+      correct: b
