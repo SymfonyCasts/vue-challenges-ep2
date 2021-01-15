@@ -31,3 +31,163 @@ extending_currentproductid:
           </script>
           ```
       correct: b
+
+extending_dynamic_component:
+  question: |
+    Say we have 2 components and we need to dynamically render them based on
+    a condition. One of them will be rendered if we have information about a
+    pizza's topping, while the other will be rendered if such information is
+    null.
+
+    Here's our component with the two sub components rendered using a `v-if`
+    directive:
+
+    ```vue
+    <template>
+        <pizza-list v-if="pizzaTopping === null" />
+
+        <pizza-description v-if="pizzaTopping !== null" />
+    </template>
+
+    <script>
+    import PizzaList from '@/components/pizza-list.vue';
+    import PizzaDescription from '@/components/pizza-description.vue';
+    import { getPizzaToppingInfo } from '@/helpers/get-pizza-topping-info.js';
+
+    export default {
+        name: 'PizzaPage',
+        data() {
+            return {
+                pizzaTopping: getPizzaToppingInfo(),
+            };
+        },
+        computed: {
+            dynamicComponent() {
+                return this.pizzaTopping === null ? PizzaList : PizzaDescription;
+            }
+        },
+    };
+    </script>
+    ```
+
+    How can we make use of the computed property to leverage dynamic components to
+    render the correct component based on `this.pizzaTopping`?
+  explanation: |
+    That's right! The dynamic component has property `is` that when used *dynamically*
+    (like `:is`), can render one component or another based on what the value of it is!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <template>
+              <component :is="dynamicComponent" />
+          </template>
+          ```
+        b: |
+          ```vue
+          <template>
+              <component is="dynamicComponent" />
+          </template>
+          ```
+        c: |
+          ```vue
+          <template>
+              <component :pizza-list="dynamicComponent" />
+          </template>
+          ```
+        d: |
+          ```vue
+          <template>
+              <component
+                  :pizza-list="!dynamicComponent"
+                  :pizza-description="dynamicComponent"
+              />
+          </template>
+          ```
+      correct: a
+
+extending_ajax_delay_rendering:
+  question: |
+    Which if these component JavaScript sections will result on an
+    Ajax call executed *as soon as possible* and its returning data
+    saved into its related data property?
+  explanation: |
+    Correct! The first place in our component we can leverage to make
+    Ajax calls is our `created` function!
+
+    Notice there's nothing really wrong with making an ajax call outside
+    of the component definition itself, but it will make things...
+    well... complicated! In theory, you will risk getting a value even
+    *before* the component has been instantiated and in general is not
+    good practice according to the Vue comunity!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```javascript
+          import { myAjaxCallFunction } from '@/services/my-service';
+
+          const myStoredData;
+          myAjaxCallFunction().then((response) => {
+              myStoredData = response.data['hydra:member'];
+          });
+
+          export default {
+              name: 'MyComponent',
+              data() {
+                  return {
+                      myStoredData,
+                  };
+              },
+          };
+          ```
+        b: |
+          ```javascript
+          import { myAjaxCallFunction } from '@/services/my-service';
+
+          export default {
+              name: 'MyComponent',
+              data() {
+                  return {
+                      myStoredData: null,
+                  };
+              },
+              async beforeMount() {
+                  this.myStoredData = (await myAjaxCallFunction()).data['hydra:member'];
+              },
+          };
+          ```
+        c: |
+          ```javascript
+          import { myAjaxCallFunction } from '@/services/my-service';
+
+          export default {
+              name: 'MyComponent',
+              data() {
+                  return {
+                      myStoredData: null,
+                  };
+              },
+              async created() {
+                  this.myStoredData = (await myAjaxCallFunction()).data['hydra:member'];
+              },
+          };
+          ```
+        d: |
+          ```javascript
+            import { myAjaxCallFunction } from '@/services/my-service';
+
+            export default {
+                name: 'MyComponent',
+                data() {
+                    return {
+                        myStoredData: null,
+                    };
+                },
+                async mounted() {
+                    this.myStoredData = (await myAjaxCallFunction()).data['hydra:member'];
+                },
+            };
+            ```
+      correct: c
