@@ -1,8 +1,9 @@
 extending_currentproductid:
   question: |
-    What is the best way to pass a JavaScript variable into your app through the template?
+    What is the proper way to pass a JavaScript variable into your app via the template?
   explanation: |
-    Correct! Remember to always escape your data so that you don't bump into JavaScript errors!
+    Correct! Remember to always escape your data so that you don't bump into JavaScript errors
+    if your variable contains things like quotes!
   features:
     multiple_choice:
       choices:
@@ -50,9 +51,9 @@ extending_dynamic_component:
     </template>
 
     <script>
-    import PizzaList from '@/components/pizza-list.vue';
-    import PizzaDescription from '@/components/pizza-description.vue';
-    import { getPizzaToppingInfo } from '@/helpers/get-pizza-topping-info.js';
+    import PizzaList from '@/components/pizza-list';
+    import PizzaDescription from '@/components/pizza-description';
+    import { getPizzaToppingInfo } from '@/helpers/get-pizza-topping-info';
 
     export default {
         name: 'PizzaPage',
@@ -70,11 +71,11 @@ extending_dynamic_component:
     </script>
     ```
 
-    How can we make use of the computed property to leverage dynamic components to
+    How can we the `dynamicComponent` computed property to to
     render the correct component based on `this.pizzaTopping`?
   explanation: |
-    That's right! The dynamic component has property `is` that when used *dynamically*
-    (like `:is`), can render one component or another based on what the value of it is!
+    That's right! The dynamic component has the the speical `is` prop that, when used *dynamically*
+    (like `:is`), can render one component or another based on its value!
   features:
     multiple_choice:
       choices:
@@ -109,18 +110,18 @@ extending_dynamic_component:
 
 extending_ajax_delay_rendering:
   question: |
-    Which if these component JavaScript sections will result on an
-    Ajax call executed *as soon as possible* and its returning data
-    saved into its related data property?
+    Which of the following will result in an
+    Ajax call that's executed *as soon as possible* and then sets the
+    returned value onto a piece of data?
   explanation: |
-    Correct! The first place in our component we can leverage to make
+    Correct! The first place in our component where we can make
     Ajax calls is our `created` function!
 
-    Notice there's nothing really wrong with making an ajax call outside
+    Notice there's nothing technically wrong with making an Ajax call outside
     of the component definition itself, but it will make things...
-    well... complicated! In theory, you will risk getting a value even
-    *before* the component has been instantiated and in general is not
-    good practice according to the Vue comunity!
+    well... complicated! In theory, you risk getting a value even
+    *before* the component has been instantiated. Instead, use `created`:
+    that's the whole point of that hook function!
   features:
     multiple_choice:
       choices:
