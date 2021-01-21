@@ -74,7 +74,7 @@ extending_dynamic_component:
     How can we the `dynamicComponent` computed property to to
     render the correct component based on `this.pizzaTopping`?
   explanation: |
-    That's right! The dynamic component has the the speical `is` prop that, when used *dynamically*
+    That's right! The dynamic component has the the special `is` prop that, when used *dynamically*
     (like `:is`), can render one component or another based on its value!
   features:
     multiple_choice:
@@ -191,4 +191,272 @@ extending_ajax_delay_rendering:
                 },
             };
             ```
+      correct: c
+
+extending_dumb_component:
+  question: |
+    In our imaginary pizza application, let's say we have a title component that
+    renders the name of the pizza on our pizza page. It gets the pizza object from
+    ajax on `created` but... let's imagine that this object is already present
+    in our parent component.
+
+    What would be the best way to make this component less smart, so that we don't
+    request this data twice?
+  explanation: |
+    Correct! As we just learn, we can render a title with just the right prop! We cannot
+    set up data elements from our parent components. We can only pass props. And we
+    certainly don't need to have any `created` function!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <template>
+              <h1>{{ title }}</h1>
+          </template>
+
+          <script>
+          export default {
+              name: 'TitleComponent',
+              props: {
+                  title: {
+                      type: String,
+                      required: true,
+                  },
+              },
+          };
+          </script>
+          ```
+        b: |
+          ```vue
+          <template>
+              <h1>{{ title }}</h1>
+          </template>
+
+          <script>
+          import { getPizza } from '@/service/pizza';
+
+          export default {
+              name: 'TitleComponent',
+              props: {
+                  title: {
+                      type: String,
+                      required: true,
+                  },
+              },
+              async created() {
+                  this.title = (await getPizza()).data.title;
+              },
+          };
+          </script>
+          ```
+        c: |
+          ```vue
+          <template>
+              <h1>{{ title }}</h1>
+          </template>
+
+          <script>
+          import { getPizza } from '@/service/pizza';
+
+          export default {
+              name: 'TitleComponent',
+              data() {
+                  return {
+                      title: '',
+                  };
+              },
+              async created() {
+                  this.title = (await getPizza()).data.title;
+              },
+          };
+          </script>
+          ```
+        d: |
+          ```vue
+          <template>
+              <h1>{{ title }}</h1>
+          </template>
+
+          <script>
+          export default {
+              name: 'TitleComponent',
+              data() {
+                  return {
+                      title: '',
+                  };
+              },
+          };
+          </script>
+          ```
+      correct: a
+
+extending_product_template:
+  question: |
+    In this lesson, I say that our product template has a section that is wrapped
+    in a `v-if` directive, only to be shown if `product` is `!== null`. What would
+    happen if we removed this `v-if` and let the page render either way?
+  explanation: |
+    That's right. While our app *would* work just the same once `product` loads,
+    we will be getting errors in the console because our `product` object is
+    `null` when the component first instantiates.
+
+    The errors come from this brief moment where our application tries to render
+    but its data still hasn't loaded. Once it loads, though, reactivity makes it
+    so that the component re-renders, this time with all the information it needs.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          We would have render errors in our App, preventing the component from
+          rendering
+        b: |
+          Our App could crash, making the browser unresponsive
+        c: |
+          The App would work just the same, rendering once our data has loaded
+        d: |
+          We would have errors in the console, for example, indicating that
+          `product.colors` is `undefined`
+      correct: d
+
+extending_add_to_cart:
+  question: |
+    Imagine I have a component which sole purpose is to render an input element:
+
+    ```vue
+    <template>
+        <input type="text" v-model="myValue" />
+    </template>
+
+    <script>
+    export default {
+        name: 'InputComponent',
+        data() {
+            return {
+                myValue: '',
+            };
+        },
+    };
+    </script>
+    ```
+
+    Which of this `:disabled` attributes will *not* result in an input element
+    being *enabled*?
+  explanation: |
+    That's right! According to Vue documentation:
+
+    ```
+    If isButtonDisabled has the value of null, undefined, or false, the disabled attribute
+    will not even be included in the rendered <button> element.
+    ```
+
+    This implies that any string value will evaluate to `true`!
+
+    > Note that `isButtonDisabled` is undefined since I haven't defined it in the object's
+    > `data` or `props`. This *will* throw a warning in the console, but the return value
+    > is still `undefined`.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <input :disabled="'0'" />
+          ```
+        b: |
+          ```vue
+          <input :disabled="false" />
+          ```
+        c: |
+          ```vue
+          <input :disabled="null" />
+          ```
+        d: |
+          ```vue
+          <input :disabled="isButtonDisabled" />
+          ```
+      correct: a
+
+extending_cart_loading_quantity:
+  question: |
+    Imagine I wrote this component that needs to take a number and send its value plus 2
+    to my database (a VERY useful scenario, I know!):
+
+    ```vue
+    <template>
+        <input
+            type="number"
+            v-model="theNumber"
+            min="1"
+        />
+
+        <input
+            type="button"
+            valye="Send!"
+            @click="sendNumber"
+        />
+    </template>
+
+    <script>
+    import { saveNumber } from '@/services/save-number';
+
+    export default {
+        name: 'MyComponent',
+        data() {
+            return {
+                theNumber: 0,
+            };
+        },
+        methods: {
+            async sendNumber() {
+                await saveNumber(this.theNumber + 2);
+            },
+        },
+    };
+    </script>
+    ```
+
+    But, oh! I've just discovered that there is a massive bug in this code!
+    When I entered the number `1`, it saved the number `12` instead of `3`!
+    What is the best way to fix this?
+  explanation: |
+    Correct! The *best* way to fix this is by using the directive attribute
+    `number`! This will take care of all the number conversions for us
+    under the hood. We'll never have to worry about it!
+
+    > Some of these options, don't even work in the real world!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          methods: {
+              async sendNumber() {
+                  await saveNumber(parseInt(this.theNumber) + 2);
+              },
+          },
+        b: |
+          ```vue
+          <input
+              type="number"
+              v-model.parseInt="theNumber"
+              @input="$event.target.value=parseInt(theNumber)"
+              min="1"
+          />
+          ```
+        c: |
+          ```vue
+          <input
+              type="number"
+              v-model.number="theNumber"
+              min="1"
+          />
+          ```
+        d: |
+          ```vue
+          <input
+              type="number"
+              v-model="theNumber"
+              @input="$event.target.value=parseInt(theNumber)"
+              min="1"
+          />
+          ```
       correct: c
