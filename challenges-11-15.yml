@@ -109,7 +109,7 @@ extending_mixin_basics:
           life cycle functions without replacing them! Sweet!
       correct: c
 
-extending_mixin_basics_2:
+extending_more_mixin:
   question: |
     Take a look at these two components and choose the answer that provides
     the right mixin, so that the components don't have to duplicate its
@@ -258,3 +258,48 @@ extending_mixin_basics_2:
           };
           ```
       correct: a
+
+extending_more_mixin_2:
+  question: |
+    Say I have this very simple counter component:
+
+    ```vue
+    <template>
+        <div v-text="count" />
+    </template>
+
+    <script>
+    export default {
+        name: 'CounterComponent',
+        data() {
+            return {
+                count: 0,
+            };
+        },
+    };
+    </script>
+    ```
+
+    Why is it important to have data being a function that returns an object?
+  explanation: |
+    Correct! As we've been able to see in the video, to have reactive components that are
+    assigned to the Vue's `this` root object, we need to make `data` be a function.
+
+    This doesn't happen with `props` however, where we define each prop inside the
+    `props` object, but we don't make it a function!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Because the function needs to be called multiple times for multiple instances
+          of the component.
+        b: |
+          Because it's the syntax defined by the Vue developers when designing the
+          Options API.
+        c: |
+          It's not important but it gives us more versatility with regards to what can
+          be computed in that initial `data` object.
+        d: |
+          Because this way, Vue can get every property of such returned object and
+          add them as reactive properties to the instance's `this` keyword.
+      correct: d
