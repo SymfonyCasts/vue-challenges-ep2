@@ -2,7 +2,7 @@ extending_currentproductid:
   question: |
     What is the proper way to pass a JavaScript variable into your app via the template?
   explanation: |
-    Correct! Remember to always escape your data so that you don't bump into JavaScript errors
+    Remember to always escape your data so that you don't bump into JavaScript errors
     if your variable contains things like quotes!
   features:
     multiple_choice:
@@ -74,7 +74,7 @@ extending_dynamic_component:
     How can we the `dynamicComponent` computed property to to
     render the correct component based on `this.pizzaTopping`?
   explanation: |
-    That's right! The dynamic component has the the special `is` prop that, when used *dynamically*
+    The dynamic component has the the special `is` prop that, when used *dynamically*
     (like `:is`), can render one component or another based on its value!
   features:
     multiple_choice:
@@ -114,7 +114,7 @@ extending_ajax_delay_rendering:
     Ajax call that's executed *as soon as possible* and then set the
     returned value onto a piece of data?
   explanation: |
-    Correct! The first place in our component where we can make
+    The first place in our component where we can make
     Ajax calls is our `created` function!
 
     Notice there's nothing technically wrong with making an Ajax call outside
@@ -225,7 +225,7 @@ extending_product_template:
     What would happen if we removed this `v-if` and let the page
     render either way?
   explanation: |
-    That's right! While our app *would* work once `product` loads,
+    While our app *would* work once `product` loads,
     we will be getting errors in the console because our `product` object is
     `null` when the component first instantiates.
 
@@ -272,7 +272,7 @@ extending_add_to_cart:
     Which of the following `:disabled` attributes would result in an input element
     being *disabled*?
   explanation: |
-    That's right! According to Vue documentation:
+    According to Vue documentation:
 
     ```
     If [ the value of a `disabled` attribute ] has the value of null, undefined,
@@ -347,7 +347,7 @@ extending_cart_loading_quantity:
     When I entered the number `1`, it saved the number `12` instead of `3`!
     What is the best way to fix this?
   explanation: |
-    Correct! The *best* way to fix this is by using the directive attribute
+    The *best* way to fix this is by using the directive attribute
     `number`! This will take care of all the number conversions for us
     under the hood. We'll never have to worry about it!
 
