@@ -111,7 +111,7 @@ extending_dynamic_component:
 extending_ajax_delay_rendering:
   question: |
     Which of the following will result in an
-    Ajax call that's executed *as soon as possible* and then sets the
+    Ajax call that's executed *as soon as possible* and then set the
     returned value onto a piece of data?
   explanation: |
     Correct! The first place in our component where we can make
@@ -193,117 +193,45 @@ extending_ajax_delay_rendering:
             ```
       correct: c
 
-extending_dumb_component:
-  question: |
-    In our imaginary pizza application, let's say we have a title component that
-    renders the name of the pizza on our pizza page. It gets the pizza object from
-    ajax on `created` but... let's imagine that this object is already present
-    in our parent component.
-
-    What would be the best way to make this component less smart, so that we don't
-    request this data twice?
-  explanation: |
-    Correct! As we just learn, we can render a title with just the right prop! We cannot
-    set up data elements from our parent components. We can only pass props. And we
-    certainly don't need to have any `created` function!
-  features:
-    multiple_choice:
-      choices:
-        a: |
-          ```vue
-          <template>
-              <h1>{{ title }}</h1>
-          </template>
-
-          <script>
-          export default {
-              name: 'TitleComponent',
-              props: {
-                  title: {
-                      type: String,
-                      required: true,
-                  },
-              },
-          };
-          </script>
-          ```
-        b: |
-          ```vue
-          <template>
-              <h1>{{ title }}</h1>
-          </template>
-
-          <script>
-          import { getPizza } from '@/service/pizza';
-
-          export default {
-              name: 'TitleComponent',
-              props: {
-                  title: {
-                      type: String,
-                      required: true,
-                  },
-              },
-              async created() {
-                  this.title = (await getPizza()).data.title;
-              },
-          };
-          </script>
-          ```
-        c: |
-          ```vue
-          <template>
-              <h1>{{ title }}</h1>
-          </template>
-
-          <script>
-          import { getPizza } from '@/service/pizza';
-
-          export default {
-              name: 'TitleComponent',
-              data() {
-                  return {
-                      title: '',
-                  };
-              },
-              async created() {
-                  this.title = (await getPizza()).data.title;
-              },
-          };
-          </script>
-          ```
-        d: |
-          ```vue
-          <template>
-              <h1>{{ title }}</h1>
-          </template>
-
-          <script>
-          export default {
-              name: 'TitleComponent',
-              data() {
-                  return {
-                      title: '',
-                  };
-              },
-          };
-          </script>
-          ```
-      correct: a
-
 extending_product_template:
   question: |
-    In this lesson, I say that our product template has a section that is wrapped
-    in a `v-if` directive, only to be shown if `product` is `!== null`. What would
-    happen if we removed this `v-if` and let the page render either way?
+    Imagine that our product template has a section that is wrapped
+    in a `v-if` directive, only to be shown if `product !== null`, as shown
+    in this lesson.
+
+    ```vue
+    <template>
+        <div :class="$style.component">
+            <loading v-show="loading" />
+
+            <h1 v-if="product !== null">{{ product.title }}</h1>
+        </div>
+    </template>
+
+    <script>
+    export default {
+        name: 'ProductComponent',
+        data() {
+            return {
+                loading: true,
+                product: null,
+            };
+        },
+        // Some more computed, life cycle functions and methods here
+    };
+    </script>
+    ```
+
+    What would happen if we removed this `v-if` and let the page
+    render either way?
   explanation: |
-    That's right. While our app *would* work just the same once `product` loads,
+    That's right! While our app *would* work once `product` loads,
     we will be getting errors in the console because our `product` object is
     `null` when the component first instantiates.
 
-    The errors come from this brief moment where our application tries to render
+    The errors come from this brief moment when our application tries to render
     but its data still hasn't loaded. Once it loads, though, reactivity makes it
-    so that the component re-renders, this time with all the information it needs.
+    so that the component re-renders: this time with all the information it needs.
   features:
     multiple_choice:
       choices:
@@ -316,12 +244,13 @@ extending_product_template:
           The App would work just the same, rendering once our data has loaded
         d: |
           We would have errors in the console, for example, indicating that
-          `product.colors` is `undefined`
+          `product.title` is `undefined`, but it *would* still render once the
+          `product` data became available.
       correct: d
 
 extending_add_to_cart:
   question: |
-    Imagine I have a component which sole purpose is to render an input element:
+    Imagine we have a component whose sole purpose is to render an input element:
 
     ```vue
     <template>
@@ -340,19 +269,20 @@ extending_add_to_cart:
     </script>
     ```
 
-    Which of this `:disabled` attributes will *not* result in an input element
-    being *enabled*?
+    Which of the following `:disabled` attributes would result in an input element
+    being *disabled*?
   explanation: |
     That's right! According to Vue documentation:
 
     ```
-    If isButtonDisabled has the value of null, undefined, or false, the disabled attribute
-    will not even be included in the rendered <button> element.
+    If [ the value of a `disabled` attribute ] has the value of null, undefined,
+    or false, the `disabled` attribute will not even be included in the rendered
+    <button> element.
     ```
 
     This implies that any string value will evaluate to `true`!
 
-    > Note that `isButtonDisabled` is undefined since I haven't defined it in the object's
+    > Note that `someUndefinedVariable` is undefined since I haven't defined it in the object's
     > `data` or `props`. This *will* throw a warning in the console, but the return value
     > is still `undefined`.
   features:
@@ -372,13 +302,13 @@ extending_add_to_cart:
           ```
         d: |
           ```vue
-          <input :disabled="isButtonDisabled" />
+          <input :disabled="someUndefinedVariable" />
           ```
       correct: a
 
 extending_cart_loading_quantity:
   question: |
-    Imagine I wrote this component that needs to take a number and send its value plus 2
+    Imagine we wrote a component that needs to take a number and send its value plus 2
     to my database (a VERY useful scenario, I know!):
 
     ```vue
@@ -389,11 +319,9 @@ extending_cart_loading_quantity:
             min="1"
         />
 
-        <input
-            type="button"
-            valye="Send!"
-            @click="sendNumber"
-        />
+        <button @click="sendNumber">
+            Send!
+        </button>
     </template>
 
     <script>
@@ -407,8 +335,8 @@ extending_cart_loading_quantity:
             };
         },
         methods: {
-            async sendNumber() {
-                await saveNumber(this.theNumber + 2);
+            sendNumber() {
+                saveNumber(this.theNumber + 2);
             },
         },
     };
@@ -423,14 +351,15 @@ extending_cart_loading_quantity:
     `number`! This will take care of all the number conversions for us
     under the hood. We'll never have to worry about it!
 
-    > Some of these options, don't even work in the real world!
+    > Option `a` will still work, but `v-model.number` does the same work for us
+    > out of the box! Option `b` is a syntax error, and `d` might just hang your browser!!
   features:
     multiple_choice:
       choices:
         a: |
           methods: {
-              async sendNumber() {
-                  await saveNumber(parseInt(this.theNumber) + 2);
+              sendNumber() {
+                  saveNumber(parseInt(this.theNumber) + 2);
               },
           },
         b: |
@@ -438,7 +367,6 @@ extending_cart_loading_quantity:
           <input
               type="number"
               v-model.parseInt="theNumber"
-              @input="$event.target.value=parseInt(theNumber)"
               min="1"
           />
           ```
