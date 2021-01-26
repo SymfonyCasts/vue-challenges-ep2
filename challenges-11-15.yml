@@ -97,7 +97,7 @@ extending_mixin_basics:
           data attributes and even props!
         b: |
           Mixins can be useful for sharing methods and computed properties
-          between components. Its items will be automatically availble to other
+          between components. Its items will be automatically available to other
           methods and even the template of the component you share it with!
         c: |
           Mixinns are a great way to extend the template or styles in a component.
