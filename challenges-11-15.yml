@@ -19,7 +19,7 @@ extending_webpack_entry:
     multiple_choice:
       choices:
         a: |
-          A new `.vue` file that will be our main component
+          A new `.vue` file to hold the new, main component
         b: |
           A JavaScript block in the Twig template that contains different configurations
           and values to be used by our Vue App
