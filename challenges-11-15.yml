@@ -27,7 +27,7 @@ extending_webpack_entry:
           A Controller, a Twig template and JavaScript file that will be loaded by the browser
           to instantiate the main component.
         d: |
-          An `addEntry` call in our Encore file to tell webpack that we're compiling
+          An `addEntry` call in `webpack.config.js` to tell webpack that it should build the file.
           a new entry.
     correct: b
 
