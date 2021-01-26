@@ -321,7 +321,7 @@ extending_product_template:
 
 extending_add_to_cart:
   question: |
-    Imagine I have a component which sole purpose is to render an input element:
+    Imagine I have a component whose sole purpose is to render an input element:
 
     ```vue
     <template>
