@@ -297,7 +297,7 @@ extending_product_template:
     in a `v-if` directive, only to be shown if `product !== null`. What would
     happen if we removed this `v-if` and let the page render either way?
   explanation: |
-    That's right. While our app *would* work just the same once `product` loads,
+    That's right! While our app *would* work once `product` loads,
     we will be getting errors in the console because our `product` object is
     `null` when the component first instantiates.
 
