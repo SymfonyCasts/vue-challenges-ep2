@@ -34,7 +34,7 @@ extending_webpack_entry:
 extending_webpack_entry_2:
   question: |
     Which of these JavaScript file examples will succeed in rendering a Vue component
-    inside an element with id `#app`?
+    inside an element with id `app`?
   explanation: |
     That's right! This bit of JavaScript code can be quite tricky to remember (and
     it does change slightly in Vue 3)!
