@@ -294,7 +294,7 @@ extending_dumb_component:
 extending_product_template:
   question: |
     In this lesson, imagine that our product template has a section that is wrapped
-    in a `v-if` directive, only to be shown if `product` is `!== null`. What would
+    in a `v-if` directive, only to be shown if `product !== null`. What would
     happen if we removed this `v-if` and let the page render either way?
   explanation: |
     That's right. While our app *would* work just the same once `product` loads,
