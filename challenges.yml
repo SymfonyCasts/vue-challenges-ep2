@@ -340,7 +340,7 @@ extending_add_to_cart:
     </script>
     ```
 
-    Which of this `:disabled` attributes will *not* result in an input element
+    Which of the following `:disabled` attributes would *not* result in an input element
     being *enabled*?
   explanation: |
     That's right! According to Vue documentation:
