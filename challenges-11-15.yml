@@ -106,7 +106,7 @@ extending_mixin_basics:
         d: |
           Mixins can help you with lifecycle behavior. By adding lifecycle functions
           to a mixin, those will be executed before any of your own component's
-          life cycle functions without replacing them! Sweet!
+          lifecycle functions without replacing them! Sweet!
       correct: c
 
 extending_more_mixin:
