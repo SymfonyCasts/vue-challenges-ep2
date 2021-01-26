@@ -88,7 +88,7 @@ extending_mixin_basics:
   explanation: |
     Correct! Mixins are a *great* way to share logical functionality between
     components! They do not, however, have the ability to extend markup or
-    styles. For that, just use regular Components!
+    styles. For that, just use regular components!
   features:
     multiple_choice:
       choices:
