@@ -105,7 +105,7 @@ extending_mixin_basics:
           will be automatically applied to any elements you provide styles for!
         d: |
           Mixins can help you with lifecycle behavior. By adding lifecycle functions
-          to a mixin will have those executed before any of your own component's
+          to a mixin, those will be executed before any of your own component's
           life cycle functions without replacing them! Sweet!
       correct: c
 
