@@ -104,7 +104,7 @@ extending_mixin_basics:
           The mixin template will be added to the component's template at the bottom, and styles
           will be automatically applied to any elements you provide styles for!
         d: |
-          Mixins help you with life-cycle behavior, adding life cycle functions
+          Mixins can help you with lifecycle behavior. By adding lifecycle functions
           to a mixin will have those executed before any of your own component's
           life cycle functions without replacing them! Sweet!
       correct: c
