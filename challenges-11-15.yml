@@ -251,7 +251,7 @@ extending_more_mixin:
                   pizzaName() {
                       return this.pizza.name + (this.pizza.hasPineapple ? ' w/ Pineapple' : '');
                   },
-                  pizzaDEscription() {
+                  pizzaDescription() {
                       return this.pizza.name +  ' ' + pizza.description;
                   },
               },
