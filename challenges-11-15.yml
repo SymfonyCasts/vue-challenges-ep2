@@ -84,7 +84,7 @@ extending_webpack_entry_2:
 
 extending_mixin_basics:
   question: |
-    What are mixins *not* good for?
+    Which of the following is *not* true about mixins?
   explanation: |
     Correct! Mixins are a *great* way to share logical functionality between
     components! They do not, however, have the ability to extend markup or
