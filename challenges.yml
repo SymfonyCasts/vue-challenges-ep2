@@ -378,7 +378,7 @@ extending_add_to_cart:
 
 extending_cart_loading_quantity:
   question: |
-    Imagine I wrote this component that needs to take a number and send its value plus 2
+    Imagine we wrote a component that needs to take a number and send its value plus 2
     to my database (a VERY useful scenario, I know!):
 
     ```vue
