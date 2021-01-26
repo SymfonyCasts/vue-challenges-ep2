@@ -301,7 +301,7 @@ extending_product_template:
     we will be getting errors in the console because our `product` object is
     `null` when the component first instantiates.
 
-    The errors come from this brief moment where our application tries to render
+    The errors come from this brief moment when our application tries to render
     but its data still hasn't loaded. Once it loads, though, reactivity makes it
     so that the component re-renders, this time with all the information it needs.
   features:
