@@ -170,7 +170,7 @@ extending_more_mixin:
             };
         },
         computed: {
-            pizzaDEscription() {
+            pizzaDescription() {
                 return this.pizza.name +  ' ' + pizza.description;
             },
         },
