@@ -303,7 +303,7 @@ extending_product_template:
 
     The errors come from this brief moment when our application tries to render
     but its data still hasn't loaded. Once it loads, though, reactivity makes it
-    so that the component re-renders, this time with all the information it needs.
+    so that the component re-renders: this time with all the information it needs.
   features:
     multiple_choice:
       choices:
