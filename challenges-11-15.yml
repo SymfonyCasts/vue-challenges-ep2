@@ -96,7 +96,7 @@ extending_mixin_basics:
           Mixins can help you share information between components, such as
           data attributes and even props!
         b: |
-          Mixins can be usefull for sharing methods and computed properties
+          Mixins can be useful for sharing methods and computed properties
           between components. Its items will be automatically availble to other
           methods and even the template of the component you share it with!
         c: |
