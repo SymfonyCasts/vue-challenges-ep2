@@ -55,7 +55,7 @@ extending_webpack_entry_2:
     Which of these JavaScript file examples will succeed in rendering a Vue component
     in `Vue 2` inside an element with id `app`?
   explanation: |
-    That's right! This bit of JavaScript code can be quite tricky to remember (and
+    This bit of JavaScript code can be quite tricky to remember (and
     it does change slightly in Vue 3)!
 
     Thankfully we have the Vue documentation site to refresh our memory if any of these
@@ -115,7 +115,7 @@ extending_mixin_basics:
   question: |
     Which of the following is *not* true about mixins?
   explanation: |
-    Correct! Mixins are a *great* way to share logical functionality between
+    Mixins are a *great* way to share logical functionality between
     components! They do not, however, have the ability to extend markup or
     styles. For that, just use regular components!
   features:
@@ -212,7 +212,7 @@ extending_more_mixin:
     </script>
     ```
   explanation: |
-    That's right! The only data that is really shared between the components is the `pizza` data
+    The only data that is really shared between the components is the `pizza` data
     object and the `created` function. Everything else is unique to each component
     and so extracting it to a mixin does *not* make the most sense.
   features:
@@ -322,7 +322,7 @@ extending_more_mixin_2:
     Why is it important that data is a *function* that returns an object?
     Why can't data be set directly to the `{ count: 0 }` object?
   explanation: |
-    Correct! As mentioned in Vue documentation, the reason why Vue needs
+    As mentioned in Vue documentation, the reason why Vue needs
     data to be a function os so that each instance of the component can
     maintain a different copy of this data.
 
