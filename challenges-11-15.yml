@@ -280,7 +280,7 @@ extending_more_mixin_2:
     </script>
     ```
 
-    Why is it important to have data being a function that returns an object?
+    Why is it important that data is a *function* that returns an object? Why can't data be set directly to the `{ count: 0 }` object?
   explanation: |
     Correct! As we've been able to see in the video, to have reactive components that are
     assigned to the Vue's `this` root object, we need to make `data` be a function.
