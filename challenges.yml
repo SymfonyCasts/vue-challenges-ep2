@@ -74,7 +74,7 @@ extending_dynamic_component:
     How can we the `dynamicComponent` computed property to to
     render the correct component based on `this.pizzaTopping`?
   explanation: |
-    That's right! The dynamic component has the the speical `is` prop that, when used *dynamically*
+    That's right! The dynamic component has the the special `is` prop that, when used *dynamically*
     (like `:is`), can render one component or another based on its value!
   features:
     multiple_choice:
@@ -111,7 +111,7 @@ extending_dynamic_component:
 extending_ajax_delay_rendering:
   question: |
     Which of the following will result in an
-    Ajax call that's executed *as soon as possible* and then sets the
+    Ajax call that's executed *as soon as possible* and then set the
     returned value onto a piece of data?
   explanation: |
     Correct! The first place in our component where we can make
@@ -191,4 +191,200 @@ extending_ajax_delay_rendering:
                 },
             };
             ```
+      correct: c
+
+extending_product_template:
+  question: |
+    Imagine that our product template has a section that is wrapped
+    in a `v-if` directive, only to be shown if `product !== null`, as shown
+    in this lesson.
+
+    ```vue
+    <template>
+        <div :class="$style.component">
+            <loading v-show="loading" />
+
+            <h1 v-if="product !== null">{{ product.title }}</h1>
+        </div>
+    </template>
+
+    <script>
+    export default {
+        name: 'ProductComponent',
+        data() {
+            return {
+                loading: true,
+                product: null,
+            };
+        },
+        // Some more computed, life cycle functions and methods here
+    };
+    </script>
+    ```
+
+    What would happen if we removed this `v-if` and let the page
+    render either way?
+  explanation: |
+    That's right! While our app *would* work once `product` loads,
+    we will be getting errors in the console because our `product` object is
+    `null` when the component first instantiates.
+
+    The errors come from this brief moment when our application tries to render
+    but its data still hasn't loaded. Once it loads, though, reactivity makes it
+    so that the component re-renders: this time with all the information it needs.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          We would have render errors in our App, preventing the component from
+          rendering
+        b: |
+          Our App could crash, making the browser unresponsive
+        c: |
+          The App would work just the same, rendering once our data has loaded
+        d: |
+          We would have errors in the console, for example, indicating that
+          `product.title` is `undefined`, but it *would* still render once the
+          `product` data became available.
+      correct: d
+
+extending_add_to_cart:
+  question: |
+    Imagine we have a component whose sole purpose is to render an input element:
+
+    ```vue
+    <template>
+        <input type="text" v-model="myValue" />
+    </template>
+
+    <script>
+    export default {
+        name: 'InputComponent',
+        data() {
+            return {
+                myValue: '',
+            };
+        },
+    };
+    </script>
+    ```
+
+    Which of the following `:disabled` attributes would result in an input element
+    being *disabled*?
+  explanation: |
+    That's right! According to Vue documentation:
+
+    ```
+    If [ the value of a `disabled` attribute ] has the value of null, undefined,
+    or false, the `disabled` attribute will not even be included in the rendered
+    <button> element.
+    ```
+
+    This implies that any string value will evaluate to `true`!
+
+    > Note that `someUndefinedVariable` is undefined since I haven't defined it in the object's
+    > `data` or `props`. This *will* throw a warning in the console, but the return value
+    > is still `undefined`.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <input :disabled="'0'" />
+          ```
+        b: |
+          ```vue
+          <input :disabled="false" />
+          ```
+        c: |
+          ```vue
+          <input :disabled="null" />
+          ```
+        d: |
+          ```vue
+          <input :disabled="someUndefinedVariable" />
+          ```
+      correct: a
+
+extending_cart_loading_quantity:
+  question: |
+    Imagine we wrote a component that needs to take a number and send its value plus 2
+    to my database (a VERY useful scenario, I know!):
+
+    ```vue
+    <template>
+        <input
+            type="number"
+            v-model="theNumber"
+            min="1"
+        />
+
+        <button @click="sendNumber">
+            Send!
+        </button>
+    </template>
+
+    <script>
+    import { saveNumber } from '@/services/save-number';
+
+    export default {
+        name: 'MyComponent',
+        data() {
+            return {
+                theNumber: 0,
+            };
+        },
+        methods: {
+            sendNumber() {
+                saveNumber(this.theNumber + 2);
+            },
+        },
+    };
+    </script>
+    ```
+
+    But, oh! I've just discovered that there is a massive bug in this code!
+    When I entered the number `1`, it saved the number `12` instead of `3`!
+    What is the best way to fix this?
+  explanation: |
+    Correct! The *best* way to fix this is by using the directive attribute
+    `number`! This will take care of all the number conversions for us
+    under the hood. We'll never have to worry about it!
+
+    > Option `a` will still work, but `v-model.number` does the same work for us
+    > out of the box! Option `b` is a syntax error, and `d` might just hang your browser!!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          methods: {
+              sendNumber() {
+                  saveNumber(parseInt(this.theNumber) + 2);
+              },
+          },
+        b: |
+          ```vue
+          <input
+              type="number"
+              v-model.parseInt="theNumber"
+              min="1"
+          />
+          ```
+        c: |
+          ```vue
+          <input
+              type="number"
+              v-model.number="theNumber"
+              min="1"
+          />
+          ```
+        d: |
+          ```vue
+          <input
+              type="number"
+              v-model="theNumber"
+              @input="$event.target.value=parseInt(theNumber)"
+              min="1"
+          />
+          ```
       correct: c
