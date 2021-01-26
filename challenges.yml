@@ -316,7 +316,7 @@ extending_product_template:
           The App would work just the same, rendering once our data has loaded
         d: |
           We would have errors in the console, for example, indicating that
-          `product.colors` is `undefined`
+          `product.colors` is `undefined`, but it *would* still render once the `product` data became available.
       correct: d
 
 extending_add_to_cart:
