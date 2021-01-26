@@ -4,7 +4,7 @@
 extending_extra_dom_updates:
   question: |
     As was mentioned in the video, we could have a better way of telling the user that
-    he needs to choose a color, ther than a simple alert.
+    they needs to choose a color, other than a simple alert.
 
     Which of these solutions would be the best one?
 
@@ -19,7 +19,7 @@ extending_webpack_entry:
     multiple_choice:
       choices:
         a: |
-          A new `.vue` file that will be our main component
+          A new `.vue` file to hold the new, main component
         b: |
           A JavaScript block in the Twig template that contains different configurations
           and values to be used by our Vue App
@@ -27,14 +27,14 @@ extending_webpack_entry:
           A Controller, a Twig template and JavaScript file that will be loaded by the browser
           to instantiate the main component.
         d: |
-          An `addEntry` call in our Encore file to tell webpack that we're compiling
+          An `addEntry` call in `webpack.config.js` to tell webpack that it should build the file.
           a new entry.
     correct: b
 
 extending_webpack_entry_2:
   question: |
     Which of these JavaScript file examples will succeed in rendering a Vue component
-    inside an element with id `#app`?
+    inside an element with id `app`?
   explanation: |
     That's right! This bit of JavaScript code can be quite tricky to remember (and
     it does change slightly in Vue 3)!
@@ -84,11 +84,11 @@ extending_webpack_entry_2:
 
 extending_mixin_basics:
   question: |
-    What are mixins *not* good for?
+    Which of the following is *not* true about mixins?
   explanation: |
     Correct! Mixins are a *great* way to share logical functionality between
     components! They do not, however, have the ability to extend markup or
-    styles. For that, just use regular Components!
+    styles. For that, just use regular components!
   features:
     multiple_choice:
       choices:
@@ -96,17 +96,17 @@ extending_mixin_basics:
           Mixins can help you share information between components, such as
           data attributes and even props!
         b: |
-          Mixins can be usefull for sharing methods and computed properties
-          between components. Its items will be automatically availble to other
+          Mixins can be useful for sharing methods and computed properties
+          between components. Its items will be automatically available to other
           methods and even the template of the component you share it with!
         c: |
-          Mixinns are a great way to extend the template or styles in a component.
-          Such will be added to the component's template at the bottom, and styles
+          Mixins are a great way to extend the template or styles in a component.
+          The mixin template will be added to the component's template at the bottom, and styles
           will be automatically applied to any elements you provide styles for!
         d: |
-          Mixins help you with life-cycle behavior, adding life cycle functions
-          to a mixin will have those executed before any of your own component's
-          life cycle functions without replacing them! Sweet!
+          Mixins can help you with lifecycle behavior. By adding lifecycle functions
+          to a mixin, those will be executed before any of your own component's
+          lifecycle functions without replacing them! Sweet!
       correct: c
 
 extending_more_mixin:
@@ -170,7 +170,7 @@ extending_more_mixin:
             };
         },
         computed: {
-            pizzaDEscription() {
+            pizzaDescription() {
                 return this.pizza.name +  ' ' + pizza.description;
             },
         },
@@ -181,8 +181,8 @@ extending_more_mixin:
     </script>
     ```
   explanation: |
-    That's right! The only data that is really shared between components is the `pizza` data
-    object and the component's `created` function. Everything else is unique to each component
+    That's right! The only data that is really shared between the components is the `pizza` data
+    object and the `created` function. Everything else is unique to each component
     and so extracting it to a mixin does *not* make the most sense.
   features:
     multiple_choice:
@@ -212,7 +212,7 @@ extending_more_mixin:
                  this.pizza = (await getPizza()).data;
               },
               computed: {
-                  pizzaDEscription() {
+                  pizzaDescription() {
                       return this.pizza.name +  ' ' + pizza.description;
                   },
               },
@@ -251,7 +251,7 @@ extending_more_mixin:
                   pizzaName() {
                       return this.pizza.name + (this.pizza.hasPineapple ? ' w/ Pineapple' : '');
                   },
-                  pizzaDEscription() {
+                  pizzaDescription() {
                       return this.pizza.name +  ' ' + pizza.description;
                   },
               },
@@ -280,7 +280,7 @@ extending_more_mixin_2:
     </script>
     ```
 
-    Why is it important to have data being a function that returns an object?
+    Why is it important that data is a *function* that returns an object? Why can't data be set directly to the `{ count: 0 }` object?
   explanation: |
     Correct! As we've been able to see in the video, to have reactive components that are
     assigned to the Vue's `this` root object, we need to make `data` be a function.
