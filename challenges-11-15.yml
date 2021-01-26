@@ -212,7 +212,7 @@ extending_more_mixin:
                  this.pizza = (await getPizza()).data;
               },
               computed: {
-                  pizzaDEscription() {
+                  pizzaDescription() {
                       return this.pizza.name +  ' ' + pizza.description;
                   },
               },
