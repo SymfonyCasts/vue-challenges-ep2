@@ -181,7 +181,7 @@ extending_more_mixin:
     </script>
     ```
   explanation: |
-    That's right! The only data that is really shared between components is the `pizza` data
+    That's right! The only data that is really shared between the components is the `pizza` data
     object and the `created` function. Everything else is unique to each component
     and so extracting it to a mixin does *not* make the most sense.
   features:
