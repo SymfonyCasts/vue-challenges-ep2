@@ -101,7 +101,7 @@ extending_mixin_basics:
           methods and even the template of the component you share it with!
         c: |
           Mixins are a great way to extend the template or styles in a component.
-          Such will be added to the component's template at the bottom, and styles
+          The mixin template will be added to the component's template at the bottom, and styles
           will be automatically applied to any elements you provide styles for!
         d: |
           Mixins help you with life-cycle behavior, adding life cycle functions
