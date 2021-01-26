@@ -4,7 +4,7 @@
 extending_extra_dom_updates:
   question: |
     As was mentioned in the video, we could have a better way of telling the user that
-    he needs to choose a color, ther than a simple alert.
+    they needs to choose a color, other than a simple alert.
 
     Which of these solutions would be the best one?
 
