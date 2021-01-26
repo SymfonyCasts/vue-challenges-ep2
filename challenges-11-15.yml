@@ -182,7 +182,7 @@ extending_more_mixin:
     ```
   explanation: |
     That's right! The only data that is really shared between components is the `pizza` data
-    object and the component's `created` function. Everything else is unique to each component
+    object and the `created` function. Everything else is unique to each component
     and so extracting it to a mixin does *not* make the most sense.
   features:
     multiple_choice:
