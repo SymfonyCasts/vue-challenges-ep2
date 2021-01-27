@@ -1,23 +1,6 @@
 # This lies in a different file so as to avoid terrible conflicts when trying to merge.
 # So once this is approved, I'll just copy-paste into `challenges.yml` and *then* merge.
 
-extending_extra_dom_updates:
-  question: |
-    As was mentioned in the video, we could have a better way of telling the user that
-    they need to choose a color, other than a simple alert.
-
-    Which of these solutions would be the best one?
-  explanation: |
-
-  features:
-    multiple_choice:
-      choices:
-        a: |
-        b: |
-        c: |
-        d: |
-      correct: a
-
 extending_webpack_entry:
   question: |
     Suppose we have a Symfony project that uses Webpack Encore. We've just finished
