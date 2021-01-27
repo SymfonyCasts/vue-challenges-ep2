@@ -2,7 +2,7 @@ extending_currentproductid:
   question: |
     What is the proper way to pass a JavaScript variable into your app via the template?
   explanation: |
-    Correct! Remember to always escape your data so that you don't bump into JavaScript errors
+    Remember to always escape your data so that you don't bump into JavaScript errors
     if your variable contains things like quotes!
   features:
     multiple_choice:
@@ -74,7 +74,7 @@ extending_dynamic_component:
     How can we the `dynamicComponent` computed property to to
     render the correct component based on `this.pizzaTopping`?
   explanation: |
-    That's right! The dynamic component has the the special `is` prop that, when used *dynamically*
+    The dynamic component has the the special `is` prop that, when used *dynamically*
     (like `:is`), can render one component or another based on its value!
   features:
     multiple_choice:
@@ -114,7 +114,7 @@ extending_ajax_delay_rendering:
     Ajax call that's executed *as soon as possible* and then set the
     returned value onto a piece of data?
   explanation: |
-    Correct! The first place in our component where we can make
+    The first place in our component where we can make
     Ajax calls is our `created` function!
 
     Notice there's nothing technically wrong with making an Ajax call outside
@@ -225,7 +225,7 @@ extending_product_template:
     What would happen if we removed this `v-if` and let the page
     render either way?
   explanation: |
-    That's right! While our app *would* work once `product` loads,
+    While our app *would* work once `product` loads,
     we will be getting errors in the console because our `product` object is
     `null` when the component first instantiates.
 
@@ -272,7 +272,7 @@ extending_add_to_cart:
     Which of the following `:disabled` attributes would result in an input element
     being *disabled*?
   explanation: |
-    That's right! According to Vue documentation:
+    According to Vue documentation:
 
     ```
     If [ the value of a `disabled` attribute ] has the value of null, undefined,
@@ -347,7 +347,7 @@ extending_cart_loading_quantity:
     When I entered the number `1`, it saved the number `12` instead of `3`!
     What is the best way to fix this?
   explanation: |
-    Correct! The *best* way to fix this is by using the directive attribute
+    The *best* way to fix this is by using the directive attribute
     `number`! This will take care of all the number conversions for us
     under the hood. We'll never have to worry about it!
 
@@ -388,3 +388,334 @@ extending_cart_loading_quantity:
           />
           ```
       correct: c
+
+
+extending_webpack_entry:
+  question: |
+    Suppose we have a Symfony project that uses Webpack Encore. We've just finished
+    building a new Vue component, but we only want to render it on a specific page.
+    And so, we've decided to create a new Webpack entry.
+
+    Which of the following options is not something that we need to do to accomplish this?
+  explanation: |
+    The 3 steps to creating a new Webpack entry that renders a Vue component are:
+    - The .vue file with the component itself
+    - A Controller that renders a Twig template, which includes a JavaScript file that
+      renders the app inside this template
+    - An entry in `webpack.config.js` to build our application.
+
+    And while passing variables into our Vue component through the template is *nice*,
+    it's not always needed!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          A new `.vue` file to hold the new, main component
+        b: |
+          A `javascripts` block in the Twig template that contains different configurations
+          and values to be used by our Vue App
+        c: |
+          A Controller, a Twig template and JavaScript file that will be loaded by the browser
+          to instantiate the main component.
+        d: |
+          An `addEntry` call in `webpack.config.js` to tell webpack that it should build the file.
+          a new entry.
+    correct: b
+
+extending_webpack_entry_2:
+  question: |
+    Which of these JavaScript file examples will succeed in rendering a Vue component
+    in `Vue 2` inside an element with id `app`?
+  explanation: |
+    This bit of JavaScript code can be quite tricky to remember (and
+    it does change slightly in Vue 3)!
+
+    Thankfully we have the Vue documentation site to refresh our memory if any of these
+    nuances get lost in forgotten-land!
+
+    > In Vue 3, the code changes to:
+    > ```vue
+        import { createApp } from 'vue';
+        import App from '@/pages/my-page.vue';
+
+        const App = createApp(App);
+
+        App.mount('#app');
+    >  ```
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```javascript
+          import Vue from 'vue';
+          import App from '@/pages/my-page.vue';
+
+          new Vue({
+              render: (h) => h(App),
+          });
+          ```
+        b: |
+          ```javascript
+          import Vue from 'vue';
+          import App from '@/pages/my-page.vue';
+
+          new Vue({
+              render: App,
+          }).$mount('#app');
+          ```
+        c: |
+          ```javascript
+          import Vue from 'vue';
+          import App from '@/pages/my-page.vue';
+
+          new Vue({
+              render: App,
+          }).$render('#app');
+          ```
+        d: |
+          ```javascript
+          import Vue from 'vue';
+          import App from '@/pages/my-page.vue';
+
+          new Vue({
+              render: (h) => h(App),
+          }).$mount('#app');
+          ```
+      correct: d
+
+extending_mixin_basics:
+  question: |
+    Which of the following is *not* true about mixins?
+  explanation: |
+    Mixins are a *great* way to share logical functionality between
+    components! They do not, however, have the ability to extend markup or
+    styles. For that, just use regular components!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Mixins can help you share information between components, such as
+          data attributes and even props!
+        b: |
+          Mixins can be useful for sharing methods and computed properties
+          between components. Its properties and methods will be automatically
+          available to other methods and even the template of the component
+          you share it with!
+        c: |
+          Mixins are a great way to extend the template or styles in a component.
+          The mixin template will be added to the component's template at the bottom, and styles
+          will be automatically applied to any elements you provide styles for!
+        d: |
+          Mixins can help you with lifecycle behavior. By adding lifecycle functions
+          to a mixin, those will be executed before any of your own component's
+          lifecycle functions without replacing them! Sweet!
+      correct: c
+
+extending_more_mixin:
+  question: |
+    Take a look at these two components. Then choose which option below correctly shows
+    a mixin that will allow them to remove their duplicated logic.
+
+    ```vue
+    <template>
+        <h1>{{ pizzaName }}</h1>
+        <p>{{ pizza.description }}</p>
+        <ul>
+            <li
+                v-for="ingredient in pizza.ingredientes"
+                :key="ingredient['@id']"
+            >
+                {{ ingredient.name }}
+            </li>
+        </ul>
+    </template>
+
+    <script>
+    import { getPizza } from '@/services/pizza';
+
+    export default {
+        name: 'PizzaDetails',
+        data() {
+            return {
+                pizza: null,
+            };
+        },
+        computed: {
+            pizzaName() {
+                return this.pizza.name + (this.pizza.hasPineapple ? ' w/ Pineapple' : '');
+            },
+        },
+        async created: {
+            this.pizza = (await getPizza()).data;
+        },
+    };
+    </script>
+    ```
+
+    ```vue
+    <template>
+        <table v-if="pizza !== null">
+            <tr>
+                <td>{{ pizzaDescription }}</td>
+                <td>{{ pizza.price }} </td>
+            </tr>
+        </table>
+    </template>
+
+    <script>
+    import { getPizza } from '@/services/pizza';
+
+    export default {
+        name: 'PizzaDetails',
+        data() {
+            return {
+                pizza: null,
+            };
+        },
+        computed: {
+            pizzaDescription() {
+                return this.pizza.name +  ' ' + pizza.description;
+            },
+        },
+        async created: {
+            this.pizza = (await getPizza()).data;
+        },
+    };
+    </script>
+    ```
+  explanation: |
+    The only data that is really shared between the components is the `pizza` data
+    object and the `created` function. Everything else is unique to each component
+    and so extracting it to a mixin does *not* make the most sense.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```javascript
+          import { getPizza } from '@/services/pizza';
+
+          export default {
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                 this.pizza = (await getPizza()).data;
+              }
+          };
+          ```
+        b: |
+          ```javascript
+          import { getPizza } from '@/services/pizza';
+
+          export default {
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                 this.pizza = (await getPizza()).data;
+              },
+              computed: {
+                  pizzaDescription() {
+                      return this.pizza.name +  ' ' + pizza.description;
+                  },
+              },
+          };
+          ```
+        c: |
+          ```javascript
+          import { getPizza } from '@/services/pizza';
+
+          export default {
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                 this.pizza = (await getPizza()).data;
+              },
+              computed: {
+                  pizzaName() {
+                      return this.pizza.name + (this.pizza.hasPineapple ? ' w/ Pineapple' : '');
+                  },
+              },
+          };
+          ```
+        d: |
+          ```javascript
+          import { getPizza } from '@/services/pizza';
+
+          export default {
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                 this.pizza = (await getPizza()).data;
+              },
+              computed: {
+                  pizzaName() {
+                      return this.pizza.name + (this.pizza.hasPineapple ? ' w/ Pineapple' : '');
+                  },
+                  pizzaDescription() {
+                      return this.pizza.name +  ' ' + pizza.description;
+                  },
+              },
+          };
+          ```
+      correct: a
+
+extending_more_mixin_2:
+  question: |
+    Say I have this very simple counter component:
+
+    ```vue
+    <template>
+        <div v-text="count" />
+    </template>
+
+    <script>
+    export default {
+        name: 'CounterComponent',
+        data() {
+            return {
+                count: 0,
+            };
+        },
+    };
+    </script>
+    ```
+
+    Why is it important that data is a *function* that returns an object?
+    Why can't data be set directly to the `{ count: 0 }` object?
+  explanation: |
+    As mentioned in Vue documentation, the reason why Vue needs
+    data to be a function os so that each instance of the component can
+    maintain a different copy of this data.
+
+    This doesn't happen with `props` however, where we define each prop inside the
+    `props` object, but we don't make it a function! the reason `props` doesn't
+    need to be inside a function is because they don't really hold data. It's
+    data is either passed down by other components on initialization, or defined
+    by our `default` keyword.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Because the function needs to be called multiple times so that multiple
+          instances of the component can have their own copy of the data.
+        b: |
+          Because it's the syntax defined by the Vue developers when designing the
+          Options API.
+        c: |
+          It's not important but it gives us more versatility with regards to what can
+          be computed in that initial `data` object.
+        d: |
+          Because this way, Vue can get every property of such returned object and
+          add them as reactive properties to the instance's `this` keyword.
+      correct: a
