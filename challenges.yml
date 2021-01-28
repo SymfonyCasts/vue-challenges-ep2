@@ -71,7 +71,7 @@ extending_dynamic_component:
     </script>
     ```
 
-    How can we the `dynamicComponent` computed property to to
+    How can we use the `dynamicComponent` computed property to
     render the correct component based on `this.pizzaTopping`?
   explanation: |
     The dynamic component has the the special `is` prop that, when used *dynamically*
@@ -420,7 +420,7 @@ extending_webpack_entry:
         d: |
           An `addEntry` call in `webpack.config.js` to tell webpack that it should build the file.
           a new entry.
-    correct: b
+      correct: b
 
 extending_webpack_entry_2:
   question: |
@@ -434,14 +434,15 @@ extending_webpack_entry_2:
     nuances get lost in forgotten-land!
 
     > In Vue 3, the code changes to:
+    >
     > ```vue
-        import { createApp } from 'vue';
-        import App from '@/pages/my-page.vue';
-
-        const App = createApp(App);
-
-        App.mount('#app');
-    >  ```
+    > import { createApp } from 'vue';
+    > import App from '@/pages/my-page.vue';
+    >
+    > const App = createApp(App);
+    >
+    > App.mount('#app');
+    > ```
   features:
     multiple_choice:
       choices:
@@ -699,8 +700,8 @@ extending_more_mixin_2:
     maintain a different copy of this data.
 
     This doesn't happen with `props` however, where we define each prop inside the
-    `props` object, but we don't make it a function! the reason `props` doesn't
-    need to be inside a function is because they don't really hold data. It's
+    `props` object, but we don't make it a function! The reason `props` doesn't
+    need to be inside a function is because they don't really hold data. Its
     data is either passed down by other components on initialization, or defined
     by our `default` keyword.
   features:
@@ -725,7 +726,7 @@ extending_cart_computed_prop:
     In Vue, why is it important to avoid having the same information set as
     `data` onto 2 different components?
   explanation: |
-    Avoid duplicated data whenever possible. It helps heep your application
+    Avoid duplicated data whenever possible. It helps keep your application
     simple and avoid bugs!
   features:
     multiple_choice:
@@ -734,8 +735,8 @@ extending_cart_computed_prop:
           Because with duplicated data, our memory footprint is bigger
           than we need.
         b: |
-          Because when we have duplicated date, one copy of this data can
-          change, while the remains outdated. This forces us to
+          Because when we have duplicated data, one copy of this data can
+          change, while the other remains outdated. This forces us to
           complicate things and add hooks to keep both sides of the data
           up to date.
         c: |
@@ -782,8 +783,8 @@ extending_cart_computed_prop_2:
     Why are we adding this check here? And what would happen if we didn't have it in place?
   explanation: |
     Indeed, our template *will* work without that check in place... but not before
-    the computed function triggers some errors. This could still ok... but nobody likes errors!
-    still be getting errors in our console!
+    the computed function triggers some errors. This could still be ok... but nobody likes
+    errors!
   features:
     multiple_choice:
       choices:
@@ -812,9 +813,9 @@ extending_parallel_ajax:
     In the right situation, parallelizing ajax calls can save the user precious
     seconds when the internet connection is not optimal!
 
-    In our video, we end up taking a different route than `await Promise.all`
-    just because there are multiple `async created` functions that get called. So
-    the end result is the same: Both calls get executed at almost the same time!
+    > In our video, we end up taking a different route than `await Promise.all()`
+    > just because there are multiple `async created` functions that get called. So
+    > the end result is the same: Both calls get executed at almost the same time!
   features:
     multiple_choice:
       choices:
@@ -822,9 +823,8 @@ extending_parallel_ajax:
           There is no advantage in doing so. `Promise.all()` is just syntax sugar.
           It will make our code more readable and clean.
         b: |
-          `Promise.all()` has the ability to launch both ajax calls in parallel, should
-          the browser support it. Once all calls are completed, the code will continue
-          as normal.
+          `Promise.all()` has the ability to launch both ajax calls in parallel.
+          Once all calls are completed, the code will continue as normal.
         c: |
           `Promise.all()` lets you organize your ajax calls in a way so that one call
           executes right after the other. This way, your data from the previous call
@@ -853,13 +853,13 @@ extending_v_for_key:
   explanation: |
     Vue uses the `key` attribute to identify unique items in a `v-for` list so that
     it can *only* modify the ones that really change. If the `key` for an item suddenly
-    changes, Vue may re-create that component from scratch, causing optimization issue
+    changes, Vue may re-create that component from scratch, causing optimization issues
     and potential data de-syncs.
   features:
     multiple_choice:
       choices:
         a: |
-          The key becomes the internal id of the object, which is useful because
+          The `key` becomes the internal id of the object, which is useful because
           it's included when Vue displays an error.
         b: |
           Because if we remove and add items from this list dynamically, the `key`
