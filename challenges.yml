@@ -719,3 +719,159 @@ extending_more_mixin_2:
           Because this way, Vue can get every property of such returned object and
           add them as reactive properties to the instance's `this` keyword.
       correct: a
+
+extending_cart_computed_prop:
+  question: |
+    In Vue, why is it important to avoid having the same information set as
+    `data` onto 2 different components?
+  explanation: |
+    Avoid duplicated data whenever possible. It helps heep your application
+    simple and avoid bugs!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Because with duplicated data, our memory footprint is bigger
+          than we need.
+        b: |
+          Because when we have duplicated date, one copy of this data can
+          change, while the remains outdated. This forces us to
+          complicate things and add hooks to keep both sides of the data
+          up to date.
+        c: |
+          Because duplicated data is a bad programming technique that should
+          be avoided if possible.
+        d: |
+          Because Vue reactivity has shortcomings when it needs to update a source
+          of data that is present twice in your application.
+      correct: b
+
+extending_cart_computed_prop_2:
+  question: |
+    In the video, we showed this computed property, which merges the data
+    returned by our watcher with the data that is present in the cart:
+
+    ```javascript
+    completeCart() {
+        if (!this.cart || !this.products) {
+            return null;
+        }
+
+        const completeItems = this.cart.items.map((cartItem) => (
+            {
+                product: this.products.find((product) => product['@id'] === cartItem.product),
+                color: cartItem.color,
+                quantity: cartItem.quantity,
+            }
+        ));
+
+        return {
+            items: completeItems,
+        };
+    },
+    ```
+
+    Take a closer look at the beginning of this function:
+
+    ```javascript
+    if (!this.cart || !this.products) {
+        return null;
+    }
+    ```
+
+    Why are we adding this check here? And what would happen if we didn't have it in place?
+  explanation: |
+    Indeed, our template *will* work without that check in place... but not before
+    the computed function triggers some errors. This could still ok... but nobody likes errors!
+    still be getting errors in our console!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Without that check in place, our application won't load. We would see a
+          blank page and an error in the console
+        b: |
+          This check is redundant. It is nice to have it, but our application can
+          work just the same without it.
+        c: |
+          Without that check in place, our application will have errors in
+          the console and our template will load, but with some bugs regarding
+          reactivity. Data might change in the future that won't be reflected in
+          our app.
+        d: |
+          Without this check, our template won't load until both variables get populated.
+          We will have errors in the console, but once the data is loaded, the
+          template would render successfully.
+      correct: d
+
+extending_parallel_ajax:
+  question: |
+    What is the advantage of using `await Promise.all()` for fetching more than one
+    ajax call in an async function?
+  explanation: |
+    In the right situation, parallelizing ajax calls can save the user precious
+    seconds when the internet connection is not optimal!
+
+    In our video, we end up taking a different route than `await Promise.all`
+    just because there are multiple `async created` functions that get called. So
+    the end result is the same: Both calls get executed at almost the same time!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          There is no advantage in doing so. `Promise.all()` is just syntax sugar.
+          It will make our code more readable and clean.
+        b: |
+          `Promise.all()` has the ability to launch both ajax calls in parallel, should
+          the browser support it. Once all calls are completed, the code will continue
+          as normal.
+        c: |
+          `Promise.all()` lets you organize your ajax calls in a way so that one call
+          executes right after the other. This way, your data from the previous call
+          is already available by the time you call the next one, which can be useful!
+        d: |
+          While `Promise.all()` won't give you any significant advantage, it's in general
+          a little bit faster than the `async` keyword.
+          for reasons of micro-optimizations.
+      correct: b
+
+extending_v_for_key:
+  question: |
+    In this video, we start with a component that iterates through a list of
+    items using the items' `index` in the Array as `key`, like so:
+
+    ```vue
+    <shopping-cart-item
+        v-for="(item, index) in items"
+        :key="index"
+        :item="item"
+    />
+    ```
+
+    But this is not ideal! In a real application, each item should have an
+    id that is unique to that item for the `key` attribute. But why is this so?
+  explanation: |
+    Vue uses the `key` attribute to identify unique items in a `v-for` list so that
+    it can *only* modify the ones that really change. If the `key` for an item suddenly
+    changes, Vue may re-create that component from scratch, causing optimization issue
+    and potential data de-syncs.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          The key becomes the internal id of the object, which is useful because
+          it's included when Vue displays an error.
+        b: |
+          Because if we remove and add items from this list dynamically, the `key`
+          for an existing item might change. That could cause Vue to destroy and
+          re-create the entire component from scratch instead of reusing the existing
+          instance.
+        c: |
+          Becauase Vue needs proper item ids to be assigned to its DOM nodes. In the
+          case of `v-for` where each node comes from `data`, vue is asking for us
+          to provide this internal id for them.
+        d: |
+          No reason, we really can put anything in the `key` attribute as long
+          as it's not duplicated. Vue will work its magic under the hood so that
+          items get rendered correctly
+      correct: b
