@@ -7,9 +7,9 @@
         },
         {
             "id": "dummy-step",
-            "name": "Dummy step",
+            "name": "dummy-step",
             "description": null
         }
     ],
-    "sha": "fdbf6a2e7cc3ad7682196f9fc43a98902bbc7f47"
+    "sha": "f7fdfb1cec6720e577e46c1934faeb4ea033f26d"
 }
