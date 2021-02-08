@@ -875,3 +875,153 @@ extending_v_for_key:
           as it's not duplicated. Vue will work its magic under the hood so that
           items get rendered correctly
       correct: b
+
+extending_prop_trap:
+  question: |
+    Imagine you have this component that renders the name of a Pizza object,
+    which you can in turn modify by typing text into an input element:
+
+    ```vue
+    <template>
+        <label>Name:</table>
+        <pizza-name-input :pizza="pizza" />
+    </template>
+
+    <script>
+    import { getPizza } from '@/services/get-pizza';
+    import PizzaNameInput from '@/components/pizza-name-input';
+
+    export default {
+        name: 'PizzaFormField',
+        components: {
+            PizzaNameInput,
+        },
+        data() {
+            pizza: null,
+        },
+        async created() {
+            this.pizza = (await getPizza()).data['hydra:member'];
+        },
+    };
+    </script>
+    ```
+
+    ```vue
+    <template>
+        <input type="text" v-model="pizza.name" />
+    </template>
+
+    <script>
+    export default {
+        name: 'PizzaNameInput',
+        props: {
+            pizza: {
+                type: Object,
+                required: true,
+            },
+        },
+    };
+    </script>
+    ```
+
+    What is the mistake we've just made here?
+  explanation: |
+    Our code will *still* work in this situation. But we can face weird side
+    efefcts when changing either the `prop` or the original `data` object that
+    contains the `pizza` object. Props were not designed to be modifiable by
+    the component that receives them!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          The `v-model` directive only works with `data` properties since `props`
+          are read only.
+        b: |
+          We should be using `v-model.trim` here to get rid of extra white spaces.
+          Failing to do this sanitation will end up with our backend database
+          getting filled with garbage.
+        c: |
+          This code will work as it is, but by assigning a prop to a `v-model` directive,
+          we're modifying that prop inside our child component. This is in general a bad idea
+          and can lead to desync issues. Props were not designed to be modifiable.
+        d: |
+          Ha! Trick question! There is nothing wrong with this code.
+          fine.
+      correct: c
+
+extending_emit_update_quantity:
+  question: |
+    Imagine we have a component that takes a value from the user and emits an
+    event when the user changes it:
+
+    ```vue
+    <template>
+        <input
+            :value="pizza.name"
+            @input="updatePizzaName"
+        />
+    </template>
+
+    <script>
+    export default {
+        name: 'PizzaNameInput',
+        props: {
+            pizza: {
+                type: Object,
+                required: true,
+            },
+        },
+        methods: {
+            updatePizzaName($event) {
+                this.$emit('update-pizza-name', { name: $event.target.value });
+            },
+        },
+    };
+    </script>
+    ```
+
+    From its parent component, I want to re-emit this event so that I can handle
+    it further up the component tree!
+
+    What is the best way of doing this?
+  explanation: |
+    While most of these options will work (except `d`), the best and simplest way to
+    "bubble" an event up is by just using the template function shortcut `$emit` with
+    its parameter `$event`!
+
+    > Notice that when bubbling events up, best practices are to keep the event's name
+    > the same. This is like when DOM events bubble up, they keep their name and their
+    > data intact!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <pizza-name-input @update-pizza-name="$emit('update-pizza-name', $event)" />
+          ```
+        b: |
+          ```vue
+          <template>
+              <pizza-name-input @update-pizza-name="updatePizzaNameParent" />
+          </template>
+
+          <script>
+          export default {
+              name: 'ParentComponent',
+              methods: {
+                  updatePizzaNameParent($event) {
+                      this.emit('update-pizza-name', $event);
+                  },
+              },
+          };
+          </script>
+          ```
+        c: |
+          ```vue
+          <pizza-name-input @update-pizza-name="$emit('update-pizza-name-parent', $event)" />
+          ```
+        d: |
+          ```vue
+          <pizza-name-input @update-pizza-name="function() { $emit('update-pizza-name', $event); }" />
+          ```
+      correct: a
