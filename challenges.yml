@@ -1477,12 +1477,12 @@ extending_cart_controls_component2:
               name: 'ShowPizza',
               components: {
                   OrderButtons,
-                  ordered: false,
-                  ordering: false,
               },
               data() {
                   return {
                       pizza: null,
+                      ordered: false,
+                      ordering: false,
                   };
               },
               async created() {
