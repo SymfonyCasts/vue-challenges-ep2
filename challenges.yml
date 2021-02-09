@@ -439,9 +439,7 @@ extending_webpack_entry_2:
     > import { createApp } from 'vue';
     > import App from '@/pages/my-page.vue';
     >
-    > const App = createApp(App);
-    >
-    > App.mount('#app');
+    > createApp(App).mount('#app');
     > ```
   features:
     multiple_choice:
@@ -1023,5 +1021,681 @@ extending_emit_update_quantity:
         d: |
           ```vue
           <pizza-name-input @update-pizza-name="function() { $emit('update-pizza-name', $event); }" />
+          ```
+      correct: a
+
+extend_add_to_cart_component:
+  question: |
+    In my pizza app, I have a section of the `show-pizza` component that allows
+    the user to order some individual slices!
+
+    Here's how the component looks:
+
+    ```vue
+    <template>
+        <div
+            :class="$style.component"
+            v-if="pizza !== null"
+        >
+            <h1>{{ pizza.name }}</h1>
+
+            <p>{{ pizza.description }}</p>
+
+            <div class="order-buttons">
+                <button
+                    @click="orderSlices(1)"
+                    :disabled="ordering"
+                >
+                    Order 1 slice!
+                </button>
+
+                <button
+                    @click="orderSlices(2)"
+                    :disabled="ordering"
+                >
+                    This pizza looks great! Order 2 slices!!
+                </button>
+
+                <button
+                    @click="orderSlices(4)"
+                    :disabled="ordering"
+                >
+                    I'm starving!! Order 4 slices!!!
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+    import { getPizza } from '@/services/get-pizza';
+    import { orderPizza } from '@/services/order-pizza';
+
+    export default {
+        name: 'ShowPizza',
+        data() {
+            return {
+                pizza: null,
+                ordering: false,
+            };
+        },
+        async created() {
+            this.pizza = (await getPizza()).data['hydra:member];
+        },
+        methods: {
+            async orderPizza(slices) {
+                await orderPizza(slices);
+                this.ordered = true;
+            },
+        },
+    };
+    </script>
+
+    <style lang="scss" module>
+    .component :global {
+        overflow: hidden;
+
+        .order-buttons {
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #FF0000;
+        }
+    }
+    </style>
+    ```
+
+    But hey! Pizza headquarters are now asking me to include these ordering buttons EVERYWHERE
+    in the app. They had such a good reception!
+
+    I need to extract all the "ordering" logic into a separate component. What would this component
+    look like?
+  explanation: |
+    Extracing functionality and presentation into a component can be tricky! This usually involves
+    copying `data`, `props`, `methods`, `computed` properties and even lifecycle functions, apart
+    from the obvious template and styles! Make sure you don't forget anything!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <template>
+              <div :class="$style.component">
+                  <button
+                      @click="orderSlices(1)"
+                      :disabled="ordering"
+                  >
+                      Order 1 slice!
+                  </button>
+
+                  <button
+                      @click="orderSlices(2)"
+                      :disabled="ordering"
+                  >
+                      This pizza looks great! Order 2 slices!!
+                  </button>
+
+                  <button
+                      @click="orderSlices(4)"
+                      :disabled="ordering"
+                  >
+                      I'm starving!! Order 4 slices!!!
+                  </button>
+              </div>
+          </template>
+
+          <script>
+          import { getPizza } from '@/services/get-pizza';
+          import { orderPizza } from '@/services/order-pizza';
+
+          export default {
+              name: 'OrderButtons',
+              data() {
+                  return {
+                      pizza: null,
+                      ordering: false,
+                  };
+              },
+              async created() {
+                  this.pizza = (await getPizza()).data['hydra:member];
+              },
+              methods: {
+                  async orderSlices(slices) {
+                      this.ordering = true;
+                      await orderPizza(slices);
+                      this.ordering = false;
+                  },
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component {
+              padding-top: 20px;
+              margin-top: 20px;
+              border-top: 1px solid #FF0000;
+          }
+          </style>
+          ```
+        b: |
+          ```vue
+          <template>
+              <div :class="$style.component">
+                  <button
+                      @click="orderSlices(1)"
+                      :disabled="ordering"
+                  >
+                      Order 1 slice!
+                  </button>
+
+                  <button
+                      @click="orderSlices(2)"
+                      :disabled="ordering"
+                  >
+                      This pizza looks great! Order 2 slices!!
+                  </button>
+
+                  <button
+                      @click="orderSlices(4)"
+                      :disabled="ordering"
+                  >
+                      I'm starving!! Order 4 slices!!!
+                  </button>
+              </div>
+          </template>
+
+          <script>
+          import { orderPizza } from '@/services/order-pizza';
+
+          export default {
+              name: 'OrderButtons',
+              data() {
+                  return {
+                      ordering: false,
+                  };
+              },
+              methods: {
+                  async orderSlices(slices) {
+                      this.ordering = true;
+                      await orderPizza(slices);
+                      this.ordering = false;
+                  },
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component {
+              padding-top: 20px;
+              margin-top: 20px;
+              border-top: 1px solid #FF0000;
+          }
+          </style>
+          ```
+        c: |
+          ```vue
+          <template>
+              <div class="order-buttons">
+                  <button
+                      @click="orderSlices(1)"
+                      :disabled="ordering"
+                  >
+                      Order 1 slice!
+                  </button>
+
+                  <button
+                      @click="orderSlices(2)"
+                      :disabled="ordering"
+                  >
+                      This pizza looks great! Order 2 slices!!
+                  </button>
+
+                  <button
+                      @click="orderSlices(4)"
+                      :disabled="ordering"
+                  >
+                      I'm starving!! Order 4 slices!!!
+                  </button>
+              </div>
+          </template>
+
+          <script>
+          import { orderPizza } from '@/services/order-pizza';
+
+          export default {
+              name: 'OrderButtons',
+              data() {
+                  return {
+                      ordering: false,
+                  };
+              },
+              methods: {
+                  async orderSlices(slices) {
+                      this.ordering = true;
+                      await orderPizza(slices);
+                      this.ordering = false;
+                  },
+              },
+          };
+          </script>
+          ```
+        d: |
+          ```vue
+          <template>
+              <div class="order-buttons">
+                  <button
+                      @click="orderSlices(1)"
+                      :disabled="ordering"
+                  >
+                      Order 1 slice!
+                  </button>
+
+                  <button
+                      @click="orderSlices(2)"
+                      :disabled="ordering"
+                  >
+                      This pizza looks great! Order 2 slices!!
+                  </button>
+
+                  <button
+                      @click="orderSlices(4)"
+                      :disabled="ordering"
+                  >
+                      I'm starving!! Order 4 slices!!!
+                  </button>
+              </div>
+          </template>
+
+          <script>
+          import { orderPizza } from '@/services/order-pizza';
+
+          export default {
+              name: 'OrderButtons',
+              data() {
+                  return {
+                      ordering: false,
+                  };
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component {
+              padding-top: 20px;
+              margin-top: 20px;
+              border-top: 1px solid #FF0000;
+          }
+          </style>
+          ```
+      correct: b
+
+extending_cart_controls_component2:
+  question: |
+    Here's the same component from the last challenge:
+
+    ```vue
+    <template>
+        <div
+            :class="$style.component"
+            v-if="pizza !== null"
+        >
+            <h1>{{ pizza.name }}</h1>
+
+            <p>{{ pizza.description }}</p>
+
+            <div class="order-buttons">
+                <button
+                    @click="orderSlices(1)"
+                    :disabled="ordering"
+                >
+                    Order 1 slice!
+                </button>
+
+                <button
+                    @click="orderSlices(2)"
+                    :disabled="ordering"
+                >
+                    This pizza looks great! Order 2 slices!!
+                </button>
+
+                <button
+                    @click="orderSlices(4)"
+                    :disabled="ordering"
+                >
+                    I'm starving!! Order 4 slices!!!
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script>
+    import { getPizza } from '@/services/get-pizza';
+    import { orderPizza } from '@/services/order-pizza';
+
+    export default {
+        name: 'ShowPizza',
+        data() {
+            return {
+                pizza: null,
+                ordering: false,
+            };
+        },
+        async created() {
+            this.pizza = (await getPizza()).data['hydra:member];
+        },
+        methods: {
+            async orderPizza(slices) {
+                this.ordering = true;
+                await orderPizza(slices);
+                this.ordering = false;
+            },
+        },
+    };
+    </script>
+
+    <style lang="scss" module>
+    .component :global {
+        overflow: hidden;
+
+        .order-buttons {
+            padding-top: 20px;
+            margin-top: 20px;
+            border-top: 1px solid #FF0000;
+        }
+    }
+    </style>
+    ```
+
+    We've just moved its order buttons logic into an outside component called `order-buttons`!
+    After including the `order-buttons` component, how would this component look like?
+  explanation: |
+    As important as being accurate when extracting logic to an external component is
+    to *remove* the left overs so that you don't end up with repeated `data` or `props`!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <template>
+              <div
+                  :class="$style.component"
+                  v-if="pizza !== null"
+              >
+                  <h1>{{ pizza.name }}</h1>
+
+                  <p>{{ pizza.description }}</p>
+
+                  <order-buttons />
+              </div>
+          </template>
+
+          <script>
+          import { getPizza } from '@/services/get-pizza';
+          import { orderPizza } from '@/services/order-pizza';
+          import OrderButtons from '@/components/order-buttons';
+
+          export default {
+              name: 'ShowPizza',
+              components: {
+                  OrderButtons,
+              },
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                  this.pizza = (await getPizza()).data['hydra:member];
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component :global {
+              overflow: hidden;
+          }
+          </style>
+          ```
+        b: |
+          ```vue
+          <template>
+              <div
+                  :class="$style.component"
+                  v-if="pizza !== null"
+              >
+                  <h1>{{ pizza.name }}</h1>
+
+                  <p>{{ pizza.description }}</p>
+
+                  <order-buttons />
+              </div>
+          </template>
+
+          <script>
+          import { getPizza } from '@/services/get-pizza';
+          import OrderButtons from '@/components/order-buttons';
+
+          export default {
+              name: 'ShowPizza',
+              components: {
+                  OrderButtons,
+                  ordered: false,
+                  ordering: false,
+              },
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                  this.pizza = (await getPizza()).data['hydra:member];
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component :global {
+              overflow: hidden;
+          }
+          </style>
+          ```
+        c: |
+          ```vue
+          <template>
+              <div
+                  :class="$style.component"
+                  v-if="pizza !== null"
+              >
+                  <h1>{{ pizza.name }}</h1>
+
+                  <p>{{ pizza.description }}</p>
+
+                  <order-buttons />
+              </div>
+          </template>
+
+          <script>
+          import { getPizza } from '@/services/get-pizza';
+          import OrderButtons from '@/components/order-buttons';
+
+          export default {
+              name: 'ShowPizza',
+              components: {
+                  OrderButtons,
+              },
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                  this.pizza = (await getPizza()).data['hydra:member];
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component :global {
+              overflow: hidden;
+          }
+          </style>
+          ```
+        d: |
+          ```vue
+          <template>
+              <div
+                  :class="$style.component"
+                  v-if="pizza !== null"
+              >
+                  <h1>{{ pizza.name }}</h1>
+
+                  <p>{{ pizza.description }}</p>
+
+                  <order-buttons />
+              </div>
+          </template>
+
+          <script>
+          import { getPizza } from '@/services/get-pizza';
+          import OrderButtons from '@/components/order-buttons';
+
+          export default {
+              name: 'ShowPizza',
+              components: {
+                  OrderButtons,
+              },
+              data() {
+                  return {
+                      pizza: null,
+                  };
+              },
+              async created() {
+                  this.pizza = (await getPizza()).data['hydra:member];
+              },
+          };
+          </script>
+
+          <style lang="scss" module>
+          .component :global {
+              overflow: hidden;
+
+              .order-buttons {
+                  padding-top: 20px;
+                  margin-top: 20px;
+                  border-top: 1px solid #FF0000;
+              }
+          }
+          </style>
+          ```
+      correct: c
+
+extending_smart_watcher:
+  question: |
+    What are deep watchers useful for?
+  explanation: |
+    In complex objects where you need to execute watchers over multiple
+    nested properties, deep watchers are the answer. The reason this is
+    not Vue's default behavior is that deep watchers are harder to
+    process!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Deep watchers are used for large objects or arrays where
+          we need a more optimized and faster method for watching
+          property changes
+        b: |
+          Deep watchers are used when the watched object is not a
+          simple data type (i.e. `Number`, `String` or `Boolean`)
+        c: |
+          Deep watchers are used when you need to watch changes in
+          complex objects, where nested properties might change.
+      correct: c
+
+extending_smart_watcher_2:
+  question: |
+    In this component, I'm using a watcher to check changes in
+    the pizza object in my component's `data`. But some of the
+    changes are not triggering a watch!!
+
+    ```vue
+    <template>
+        // Some fancy template here!
+    </template>
+
+    <script>
+    import { getPizza } from '@/services/get-pizza';
+    import { executeFancyWatcherLogicHere } from '@/some/crazy/path';
+
+    export default {
+        name: 'PizzaComponent',
+        data() {
+            return {
+                pizza: null;
+            };
+        },
+        async created() {
+            this.pizza = (await getPizza()).data['hydra:member'];
+        },
+        watch: {
+            async pizza() {
+                await executeFancyWatcherLogicHere();
+            },
+        },
+    };
+    </script>
+    ```
+
+    I'm thinking that since pizza is a complex object, once it loads,
+    I need to switch the watcher to be a deep watcher. What is the
+    correct way to do it?
+  explanation: |
+    Remember that watchers have 2 syntaxes: They can be a function,
+    with the name of the property to watch, or they can be an object
+    with options!
+
+    > There are more options to watchers than what we've seen here!
+    > You can refer to Vue's documentation to see what those are.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```javascript
+          watch: {
+              pizza: {
+                  deep: true,
+                  handler() {
+                      executeFancyWatcherLogicHere();
+                  },
+              },
+          },
+          ```
+        b: |
+          ```javascript
+          watch: {
+              pizza() {
+                  this.setDeep = true;
+                  executeFancyWatcherLogicHere();
+              },
+          },
+          ```
+        c: |
+          ```javascript
+          watch: {
+              pizza: {
+                  deep: true,
+                  watcher() {
+                      executeFancyWatcherLogicHere();
+                  },
+              },
+          },
+          ```
+        d: |
+          ```javascript
+          watch: {
+              pizza: {
+                  deepWatcher() {
+                      executeFancyWatcherLogicHere();
+                  },
+              },
+          },
           ```
       correct: a
