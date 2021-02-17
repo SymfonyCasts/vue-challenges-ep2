@@ -1699,3 +1699,392 @@ extending_smart_watcher_2:
           },
           ```
       correct: a
+
+extending_css_transitions:
+  question: |
+    Imagine I have a simple component that can show a message when one of our
+    customers has bought too much pizza.
+
+    ```vue
+    <template>
+        <div :class="{
+                [$style.component]: true,
+                [$style.tall]: showDisclaimer,
+            }"
+        >
+            <button @click="addPizzaToCart" />
+
+            <p v-show="showDisclaimer">
+                <strong>Disclaimer</strong>: Eating too much pizza can be
+                bad for your health!
+            </p>
+        </div>
+    </template>
+
+    <script>
+    import { buyPizza } from '@/services/buy-pizza';
+
+    export default {
+        name: 'PizzaCheckout',
+        data() {
+            return {
+                pizzaCount: 0,
+                showDisclaimer: false,
+            };
+        },
+        methods: {
+            async addPizzaToCart() {
+                await buyPizza();
+
+                this.pizzaCount++;
+                if (this.pizzaCount > 10) {
+                    this.showDisclaimer = true;
+                }
+            }
+        },
+    };
+    </script>
+    ```
+
+    In an application where this component has a fixed height, I want to
+    add some styling so that its height will *transition* smoothly when that message
+    toggles on and off.
+
+    Which `style` tag would be good for the job?
+  explanation: |
+    Don't forget to transition the element's `height` property and provide good values
+    through the different classes!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <style lang="scss" module>
+          .component {
+              height: 200px;
+
+              &.tall {
+                  height: 400px;
+              }
+          }
+          </style>
+          ```
+        b: |
+          ```vue
+          <style lang="scss" module>
+          .component {
+              height: 200px;
+              transition: height;
+
+              &.tall {
+                  height: 400px;
+              }
+          }
+          </style>
+          ```
+        c: |
+          ```vue
+          <style lang="scss" module>
+          .component {
+              height: 200px;
+              transition: height 1s;
+
+              &.tall {
+                  height: 400px;
+              }
+          }
+          </style>
+          ```
+        d: |
+          ```vue
+          <style lang="scss" module>
+          .component {
+              height: 200px;
+              transition: height 1s;
+          }
+          </style>
+          ```
+      correct: c
+
+extending_css_transitions_2:
+  question: |
+    Imagine I have this element in a template that I'm transitioning to fade in and out:
+
+    ```vue
+    <template>
+        <div :class="$style.component">
+            <transition>
+                <p v-show="showDisclaimer" class="transition-class">
+                    <strong>Disclaimer</strong>: Eating too much pizza can be
+                    bad for your health!
+                </p>
+            </transition>
+        </div>
+    </template>
+
+    <style lang="scss" module>
+    .component :global {
+        .transition-testing {
+            transition: opacity 1s;
+        }
+    }
+    </style>
+    ```
+
+    When we transition an element's opacity and try to show or hide this
+    element using `v-show`, our transition breaks as shown in the video.
+    Why is this so?
+  explanation: |
+    Since `v-show` changes the `display` property from `none` to `inherit`,
+    our transition over the `opacity` property has no effect in the DOM - the transition is not actually changing!
+    Notice that transitioning over the `display` property does not provide
+    a fading effect as we'd expect. You can transition over many CSS properties, but
+    display *cannot* be transitioned.
+    Vue transitions later.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Because Vue's `v-show` directive overrides any class that deals
+          with an element's opacity or display properties.
+        b: |
+          Because Vue's `v-show` directive cancels any transition rules
+          that we apply to the element.
+        c: |
+          Because Vue's `v-show` directive makes the `opacity` property
+          jump from `1` to `0` immediately.
+        d: |
+          Because Vue's `v-show` directive works on the `display` property
+          of an element, which is not the property we're transitioning.
+      correct: d
+
+extending_transitions:
+  question: |
+    Our component that shows or hides a disclaimer message upon buying
+    pizza slices has made a big impact in our customer's health! Yay!
+
+    But our CEO is not very happy with the visual results... Nay!
+
+    They now wants us to just fade in or out the message text itself (instead of
+    adjusting the height) when a user wants to buy too much pizza. We can use
+    Vue transitions for that!
+
+    Here's the initial component's template:
+
+    ```vue
+    <template>
+        <div>
+            <button @click="addPizzaToCart" />
+
+            <p v-show="showDisclaimer">
+                <strong>Disclaimer</strong>: Eating too much pizza can be
+                bad for your health!
+            </p>
+        </div>
+    </template>
+    ```
+
+    How can we make it work using Vue transitions?
+  explanation: |
+    Using Vue transitions can seem a bit complicated at first, but it's
+    really a very useful feature once you get to know it! A lot like driving a
+    manual transmission (yes, this is a skill that many of Americans - like me! - completely lack).
+
+    Remember the classes it relies on have to be under the `:global` keyword,
+    otrherwise your transition won't work where the class names have been
+    altered!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```vue
+          <template>
+              <div :class="$style.component">
+                  <button @click="addPizzaToCart" />
+
+                 <transition>
+                      <p v-show="showDisclaimer">
+                          <strong>Disclaimer</strong>: Eating too much pizza can be
+                          bad for your health!
+                      </p>
+                 </transition>
+              </div>
+          </template>
+
+          <style lang="scss" module>
+          .component :global {
+              .v-enter, .v-leave {
+                  opacity: 0;
+              }
+          }
+          </style>
+          ```
+        b: |
+          ```vue
+          <template>
+              <div :class="$style.component">
+                  <button @click="addPizzaToCart" />
+
+                  <transition>
+                      <p v-show="showDisclaimer">
+                          <strong>Disclaimer</strong>: Eating too much pizza can be
+                          bad for your health!
+                      </p>
+                  </transition>
+              </div>
+          </template>
+
+          <style lang="scss" module>
+          .component :global {
+              .v-enter-active, .v-leave-active {
+                  transition: opacity 1s;
+              }
+
+              .v-enter, .v-leave {
+                  opacity: 0;
+              }
+          }
+          </style>
+          ```
+        c: |
+          ```vue
+          <template>
+              <div :class="$style.component">
+                  <button @click="addPizzaToCart" />
+
+                  <transition>
+                      <p v-show="showDisclaimer">
+                          <strong>Disclaimer</strong>: Eating too much pizza can be
+                          bad for your health!
+                      </p>
+                  </transition>
+              </div>
+          </template>
+
+          <style lang="scss" module>
+          .component {
+              .v-enter-active, .v-leave-active {
+                  transition: opacity 1s;
+              }
+
+              .v-enter, .v-leave {
+                  opacity: 0;
+              }
+          }
+          </style>
+          ```
+        d: |
+          ```vue
+          <template>
+              <div :class="$style.component">
+                  <button @click="addPizzaToCart" />
+
+                  <p v-show="showDisclaimer" transition>
+                      <strong>Disclaimer</strong>: Eating too much pizza can be
+                      bad for your health!
+                  </p>
+              </div>
+          </template>
+
+          <style lang="scss" module>
+          .component :global {
+              .v-enter-active, .v-leave-active {
+                  transition: opacity 1s;
+              }
+
+              .v-enter, .v-leave {
+                  opacity: 0;
+              }
+          }
+          </style>
+          ```
+      correct: b
+
+extending_transition_name:
+  question: |
+    What does the transition `name` property do?
+  explanation: |
+    Having several transitions forces us to use `names` so that we can have well
+    defined classes defining them!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          It names the transition so that we can track it in the Vue Dev Tools
+          should we need to debug it.
+        b: |
+          It changes the name of the transition classes for a given transition
+          so you can have different transitions in your application with different
+          names.
+        c: |
+          Name doesn't really do anything. It's just a standard DOM attribute we
+          can use to select elements in the DOM.
+        d: |
+          The `name` property in a transition corresponds to the name of the component
+          they are being used in. It's not mandatory, but it's nice to add it.
+      correct: b
+
+extending_transition_name_2:
+  question: |
+    Vue transitions have also a `mode` attribute. The default for a transition
+    in Vue is that both transitions happen simultaneously.
+
+    What happens when we set the `mode` attribute to be `out-in`?
+  explanation: |
+    In cases where swapping DOM elements that ought to occupy the same space,
+    but don't have absolute positioning, sometimes it's better to use the `out-in`
+    mode, so that one component can fade out *before* the other component fades in!
+    There is also `in-out` where the opposite happens!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          When setting `out-in`, our component will fade out before the other component
+          starts fading in!
+        b: |
+          When setting `out-in`, our component will fade in before the other component
+          starts fading out!
+        c: |
+          When setting `out-in`, both components will fade in/out at the same time
+      correct: a
+
+extending_prop_transition:
+  question: |
+    In this video, we talk about adding a `key` attribute to a component so that
+    we can transition its appearance when a prop changes.
+
+    ```vue
+    <transition
+        name="fade"
+        mode="out-in"
+    >
+        <title
+            :key="currentState"
+            :text="pageTitle"
+        />
+    </transition>
+    ```
+
+    How does this work?
+  explanation: |
+    Using `key` on a component makes Vue destroy and recreate it when that prop changes.
+    change. This works in our scenario, but it might lead to issues if the
+    component has some data that needs to be saved between states.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          Vue transitions look for the `key` attribute of a component so that it
+          can detect changes to it and operate transitions.
+        b: |
+          By adding a `key` attribute, we are telling Vue that it should recursively
+          look into `props`, `data` and `computed` so that it can trigger the transition
+          if any of these things change.
+        c: |
+          Trick question! It's really the `text` attribute we're transitioning over,
+          Vue detects its change and makes it work!
+        d: |
+          By adding a `key` attribute, Vue destroys and recreates the component every
+          time the value of `key` changes. This means that we now have effectively 2
+          components to transition over!
+      correct: d
