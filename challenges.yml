@@ -1871,7 +1871,7 @@ extending_transitions:
 
     Here's the initial component's template:
 
-    ```vue
+    ```html
     <template>
         <div>
             <button @click="addPizzaToCart" />
@@ -2053,7 +2053,7 @@ extending_prop_transition:
     In this video, we talk about adding a `key` attribute to a component so that
     we can transition its appearance when a prop changes.
 
-    ```vue
+    ```html
     <transition
         name="fade"
         mode="out-in"
@@ -2087,4 +2087,215 @@ extending_prop_transition:
           By adding a `key` attribute, Vue destroys and recreates the component every
           time the value of `key` changes. This means that we now have effectively 2
           components to transition over!
+      correct: d
+
+extending_checkout_form:
+  question: |
+    In summary, what does `v-model` do to an `input` element when we add to it?
+  explanation: |
+    On a high level, the job of `v-model` is to keep the some piece of data in sync between the UI and the
+    data. Soon we'll learn *exactly* how Vue does this!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          `v-model` creates a model of an input element that corresponds to an object.
+          In this object we can set styles, properties and the input's value.
+        b: |
+          `v-model` triggers events at certain points of the application life cycle so
+          that an input element can load a piece of data.
+        c: |
+          `v-model` ensures that our input element stays in sync with the data element we
+          pass to it.
+        d: |
+          `v-model` triggers keyboard events at all times so that we can update our
+          data according to an input element's value.
+      correct: c
+
+extending_checkout_form2:
+  question: |
+    `v-model` has some "modifiers" we can add to it that change the way
+    we process data as it is entered.
+
+    Which of these options is *not* a valid `v-model` modifier?
+    Vue tutorials?
+  explanation: |
+    So far we've covered `v-model.number` and `v-model.trim`. There is another
+    modifier, `v-model.lazy`, which only updates our data once the input looses
+    focus (as opposed to listening to every key up).
+
+    > Vue 3 now supports custom modifiers, which are modifiers that you can
+    > implement as functions, pretty much like *twig* and its custom filters!
+    > `v-model.capitalize` is one such example given in the docs, but it's
+    > not native to Vue!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          `v-model.trim`: this removes all spaces before and after
+          the value entered in an input element.
+        b: |
+          `v-model.capitalize`: this capitalizes every word entered
+          in an input element.
+        c: |
+          `v-model.number`: this parses the value into a JavaScript
+          `Number` type.
+      correct: b
+
+extend_v_model_custom_component:
+  question: |
+    We are in the process of building a nice checkout form for our pizza customers.
+    It looks something like this:
+
+    ```html
+    <template>
+        <form>
+            <p>Please, enter your info here:</p>
+
+            <fancy-input
+                id="name"
+                v-model="client.name"
+                label="Name:"
+            />
+        </form>
+    </template>
+    ```
+
+    We have just written the first input for the customer's name and we want it
+    to be a custom component. But we've forgotten how to implement `v-model` in
+    a custom component in Vue 2!
+
+    Which of these templates in `fancy-input.vue` would do the trick, assuming our component has a prop
+    `value` of type `String`?
+  explanation: |
+    In vue 2, `v-model` translates to:
+
+    ```html
+    <fancy-input
+       :value="client.name"
+       @input="$emit('input', $event.target.value)
+    />
+    ```
+
+    Just remember that in Vue 3, the default prop to be used in `v-model` is `modelValue`!
+
+    > Alternatively, you can also pass `v-model:value` in Vue 3. The `:value` part
+    > acts as a parameter of the `v-model` *"function"* and tells it that
+    > the prop we want to use is called `value`. Just like in Vue 2!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```html
+          <input
+              type="text"
+              :value="value"
+              @input="$emit('input', $event.target.value)"
+          >
+          ```
+        b: |
+          ```html
+          <input
+              type="text"
+              :value="value"
+              @input="$emit('input', $event)"
+          >
+          ```
+        c: |
+          ```html
+          <input
+              type="text"
+              :value="value"
+              @change="$emit('input', $event.target.value)"
+          >
+          ```
+        d: |
+          ```html
+          <input
+              type="text"
+              :value="value"
+              @keyup="$emit('input', $event.target.value)"
+          >
+          ```
+      correct: a
+extend_v_bind_object:
+  question: |
+    `v-bind` is an amazing shortcut that lets us assign multiple, or even dynamic
+    props to a component using one single attribute. Given this piece of code,
+    what are the actual props that the child component will receive?
+
+    ```html
+    <template>
+        <child-component
+            text="Some text prop here"
+            v-bind="{
+                isValid: true,
+                showText: true,
+            }"
+        />
+    </template>
+    ```
+  explanation: |
+    The fact that `v-bind` is so flexible is a great feature of Vue. You can
+    mix `v-bind` with regular props and get both passed down to the child
+    component.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          ```
+          {
+              isValid: true,
+              showText: true,
+          }
+          ```
+        b: |
+          ```
+          {
+              text: 'Some text prop here',
+          }
+          ```
+        c: |
+          ```
+          {
+              isValid: true,
+              showText: true,
+              text: 'Some text prop here',
+          }
+          ```
+      correct: c
+
+extending_checkout_submit:
+  question: |
+    In this video, we show a neat trick that we can do when submitting a form
+    in Vue:
+
+    ```html
+    <form @submit.prevent="onSubmit">
+        ...
+    </form>
+    ```
+
+    What exactly does the modifier `prevent` do?
+  explanation: |
+    Event listeners in Vue have several modifiers, of which `prevent` is
+    the most useful!
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          It prevents our component from breaking if there are any errors
+          in our callback. It's essentially like wrapping the call with
+          a `try...catch`.
+        b: |
+          It prevents other handlers from being executed on that same event,
+          making our callback function exclusive.
+        c: |
+          It calls `event.preventDefault()` and `event.stopPropagation()` before
+          calling our callback function, which means that the default behavior
+          for that event (the form submitting) won't take place and the event won't bubble up.
+        d: |
+          It calls `event.preventDefault()` before calling our callback
+          function, which means that the default behavior for that event (the form submitting)
+          won't take place.
       correct: d
