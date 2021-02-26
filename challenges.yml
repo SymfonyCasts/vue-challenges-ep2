@@ -2299,3 +2299,73 @@ extending_checkout_submit:
           function, which means that the default behavior for that event (the form submitting)
           won't take place.
       correct: d
+
+extending_loosing_reactivity:
+  question: |
+    Imagine I have this data object that will hold some error messages, just like
+    shown in the last videos:
+
+    ```js
+    data() {
+        return {
+            validationErrors: {},
+        };
+    },
+    ```
+
+    Whenever a user tries to buy more than 3 slices of pizza at once, I want to
+    add a very specific validation error using this method:
+
+    ```js
+    methods: {
+        addHealthyError() {
+            this.validationErrors.healthyError = 'Please, consider getting a Doctor\'s appointment for a full blood test checkup';
+        },
+    },
+    ```
+
+    Then, we render the error at the top of the form:
+
+    ```vue
+    <template>
+        <form @submit.prevent="onSubmit">
+            <div class="health-message">
+                {{ validationErrors.healthyError }}
+            </div>
+        </form>
+    </template>
+    ```
+
+    But, oh no! This isn't working properly! I'm getting all sorts of weird behavior!
+    Why exactly is this?
+  explanation: |
+    Losing reactivity can happen in several cases in Vue 2 (and some even in Vue 3!). One
+    common way to lose reactivity is by adding or deleting properties on an Object.
+
+    Another common way to lose reactivity is to re-assign an array item or its length property,
+    for example:
+
+    ```javascript
+    vm.items[1] = 'x' // is NOT reactive
+    vm.items.length = 2 // is NOT reactive
+    ```
+
+    > While option C is somewhat true, it's not really the reason why our page isn't working.
+    > The reason lies within the "loosing reactivity" theme.
+  features:
+    multiple_choice:
+      choices:
+        a: |
+          There is a typo in `healthyError` so the template is rendering an undefined
+          value!
+        b: |
+          By adding or removing properties to objects in Vue 2, we are losing
+          reactivity. This means that Vue cannot detect that a change has been made to
+          our object.
+        c: |
+          We're using a data object as opposed to a computed property. Using a computed
+          property would solve our issue.
+        d: |
+          We forgot to define the object's properties as "reactive" when initializing
+          our component.
+      correct: b
